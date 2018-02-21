@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#484A4B"
+    tools:context="com.example.dervis.autonomous.DiagnosticsActivity"
+    tools:layout_editor_absoluteY="25dp">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/diagToolbar"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/backArrowBtn"
+        android:layout_width="25dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:background="@android:color/transparent"
+        android:onClick="backArrow"
+        android:rotation="180"
+        app:layout_constraintBottom_toBottomOf="@+id/diagToolbar"
+        app:layout_constraintStart_toStartOf="@+id/diagToolbar"
+        app:srcCompat="@drawable/arrow" />
+
+    <TextView
+        android:id="@+id/headerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Diagnostics"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/diagToolbar"
+        app:layout_constraintEnd_toEndOf="@+id/diagToolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/diagToolbar" />
+
+    <ImageView
+        android:id="@+id/odometerImg"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="9dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/carRectImg"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/odometer" />
+
+    <TextView
+        android:id="@+id/odometerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Odometer"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/odometerValueText"
+        app:layout_constraintStart_toEndOf="@+id/odometerImg" />
+
+    <TextView
+        android:id="@+id/odometerValueText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="13dp"
+        android:layout_marginStart="16dp"
+        android:text="89 m"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/carRectImg"
+        app:layout_constraintStart_toEndOf="@+id/odometerImg" />
+
+    <ImageView
+        android:id="@+id/carRectImg"
+        android:layout_width="0dp"
+        android:layout_height="85dp"
+        app:layout_constraintBottom_toTopOf="@+id/settingsRectImg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:color/transparent"
+        android:onClick="carDataActivity"
+        />
+
+    <ImageView
+        android:id="@+id/carImg"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/settingsRectImg"
+        app:layout_constraintStart_toStartOf="@+id/carRectImg"
+        app:srcCompat="@drawable/car" />
+
+    <TextView
+        android:id="@+id/carDataText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:layout_marginStart="16dp"
+        android:text="Car data"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/settingsRectImg"
+        app:layout_constraintStart_toEndOf="@+id/carImg" />
+
+    <ImageButton
+        android:id="@+id/carArrowImg"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toTopOf="@+id/settingsRectImg"
+        app:layout_constraintEnd_toEndOf="@+id/carRectImg"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toEndOf="@+id/carDataText"
+        app:layout_constraintTop_toTopOf="@+id/carRectImg"
+        app:srcCompat="@drawable/arrow" />
+
+    <ImageView
+        android:id="@+id/settingsRectImg"
+        android:layout_width="0dp"
+        android:layout_height="85dp"
+        app:layout_constraintBottom_toTopOf="@+id/diagRectImg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:color/transparent" />
+
+    <ImageView
+        android:id="@+id/settingsImg"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/settingsRectImg"
+        app:layout_constraintStart_toStartOf="@+id/settingsRectImg"
+        app:srcCompat="@drawable/settings" />
+
+    <TextView
+        android:id="@+id/SettingsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:layout_marginStart="16dp"
+        android:text="Maintanence"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/settingsRectImg"
+        app:layout_constraintStart_toEndOf="@+id/settingsImg" />
+
+    <ImageButton
+        android:id="@+id/settingsArrowImg"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="@+id/settingsRectImg"
+        app:layout_constraintEnd_toEndOf="@+id/settingsRectImg"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toEndOf="@+id/SettingsText"
+        app:layout_constraintTop_toTopOf="@+id/settingsRectImg"
+        app:srcCompat="@drawable/arrow" />
+
+    <ImageView
+        android:id="@+id/diagRectImg"
+        android:layout_width="0dp"
+        android:layout_height="85dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:color/transparent" />
+
+    <ImageView
+        android:id="@+id/diagImg"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/diagRectImg"
+        app:layout_constraintStart_toStartOf="@+id/diagRectImg"
+        app:srcCompat="@drawable/diag" />
+
+    <TextView
+        android:id="@+id/diagText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:layout_marginStart="16dp"
+        android:text="Diagnostics"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/diagRectImg"
+        app:layout_constraintStart_toEndOf="@+id/diagImg" />
+
+    <ImageButton
+        android:id="@+id/diagArrowImg"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="@+id/diagRectImg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toEndOf="@+id/diagText"
+        app:layout_constraintTop_toBottomOf="@+id/settingsRectImg"
+        app:layout_constraintVertical_bias="0.29000002"
+        app:srcCompat="@drawable/arrow" />
+
+    <ImageView
+        android:id="@+id/APcarImg"
+        android:layout_width="250dp"
+        android:layout_height="150dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/diagToolbar"
+        app:srcCompat="@drawable/apcar" />
+
+</android.support.constraint.ConstraintLayout>

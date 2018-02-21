@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#484A4B"
+    tools:context="com.example.dervis.autonomous.MainActivity"
+    tools:layout_editor_absoluteY="25dp">
+
+
+    <ImageView
+        android:id="@+id/batteryStatusImg"
+        android:layout_width="353dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/speedImg"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/battery" />
+
+    <ImageView
+        android:id="@+id/speedImg"
+        android:layout_width="0dp"
+        android:layout_height="99dp"
+        app:layout_constraintBottom_toTopOf="@+id/rectLock"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/batteryStatusImg"
+        app:srcCompat="@drawable/speed" />
+
+    <TextView
+        android:id="@+id/currentSpeedText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:text="1"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/speedImg"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/speedImg"
+        app:layout_constraintTop_toTopOf="@+id/speedImg" />
+
+    <TextView
+        android:id="@+id/msText"
+        android:layout_width="32dp"
+        android:layout_height="25dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="m/s"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/speedImg"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currentSpeedText" />
+
+    <ImageView
+        android:id="@+id/rectLock"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="1dp"
+        android:background="#2D2D2D"
+        android:scaleType="center"
+        app:layout_constraintBottom_toTopOf="@+id/remoteRect"
+        app:layout_constraintEnd_toStartOf="@+id/recLights"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        android:onClick="lockClicked"
+        />
+
+    <ImageView
+        android:id="@+id/lockedImg"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/rectLock"
+        app:layout_constraintEnd_toEndOf="@+id/rectLock"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/rectLock"
+        app:srcCompat="@drawable/locked" />
+
+    <ImageView
+        android:id="@+id/recLights"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="1dp"
+        android:layout_marginStart="1dp"
+        android:background="#2D2D2D"
+        android:scaleType="center"
+        app:layout_constraintBottom_toTopOf="@+id/remoteRect"
+        app:layout_constraintEnd_toStartOf="@+id/rectHorn"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/rectLock" />
+
+    <ImageView
+        android:id="@+id/lightsImg"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="112dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/recLights"
+        app:layout_constraintEnd_toEndOf="@+id/recLights"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/recLights"
+        app:layout_constraintTop_toTopOf="@+id/recLights"
+        app:srcCompat="@drawable/lights" />
+
+    <ImageView
+        android:id="@+id/rectHorn"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="1dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginStart="1dp"
+        android:background="#2D2D2D"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/remoteRect"
+        app:layout_constraintEnd_toStartOf="@+id/rectStop"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/recLights" />
+
+    <ImageView
+        android:id="@+id/hornImg"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/rectHorn"
+        app:layout_constraintEnd_toStartOf="@+id/rectStop"
+        app:layout_constraintStart_toStartOf="@+id/rectHorn"
+        app:layout_constraintTop_toTopOf="@+id/rectHorn"
+        app:srcCompat="@drawable/horn" />
+
+    <ImageView
+        android:id="@+id/rectStop"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="1dp"
+        android:background="#2D2D2D"
+        android:scaleType="fitCenter"
+        android:onClick="emergencyStopClick"
+        app:layout_constraintBottom_toTopOf="@+id/remoteRect"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/rectHorn" />
+
+    <ImageView
+        android:id="@+id/stopImg"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/rectStop"
+        app:layout_constraintEnd_toEndOf="@+id/rectStop"
+        app:layout_constraintStart_toStartOf="@+id/rectStop"
+        app:layout_constraintTop_toTopOf="@+id/rectStop"
+        app:srcCompat="@drawable/stop_2" />
+
+    <ImageView
+        android:id="@+id/remoteRect"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="1dp"
+        android:background="#2D2D2D"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/diagRect"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:onClick="remoteControlClick"/>
+
+    <ImageView
+        android:id="@+id/wheelImage"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:baselineAlignBottom="false"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/remoteRect"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/remoteRect"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/wheel" />
+
+    <TextView
+        android:id="@+id/remoteText"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginStart="24dp"
+        android:text="Remote control"
+        android:textAlignment="textStart"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/diagRect"
+        app:layout_constraintStart_toEndOf="@+id/wheelImage" />
+
+    <ImageView
+        android:id="@+id/diagRect"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginBottom="1dp"
+        android:background="#2D2D2D"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toTopOf="@+id/locationRect"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:onClick="diagActivity"
+        />
+
+    <ImageView
+        android:id="@+id/diagImg"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/diagRect"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/diagRect"
+        app:srcCompat="@drawable/diag" />
+
+    <TextView
+        android:id="@+id/diagText"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginStart="24dp"
+        android:text="Diagnostic"
+        android:textAlignment="textStart"
+        android:textColor="@android:color/white"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/locationRect"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/diagImg" />
+
+    <ImageView
+        android:id="@+id/locationRect"
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:background="#2D2D2D"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:onClick="LocationClicked"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <ImageView
+        android:id="@+id/locationImg"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@+id/locationRect"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/locationRect"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/position" />
+
+    <TextView
+        android:id="@+id/LocationText"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_marginBottom="28dp"
+        android:layout_marginStart="24dp"
+        android:text="Location"
+        android:textAlignment="textStart"
+        android:textColor="@android:color/white"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/locationRect"
+        app:layout_constraintStart_toEndOf="@+id/locationImg" />
+
+    <ImageView
+        android:id="@+id/batteryStatus"
+        android:layout_width="148dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="97dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="@+id/batteryStatusImg"
+        app:layout_constraintTop_toTopOf="@+id/batteryStatusImg"
+        app:srcCompat="@android:color/holo_green_light" />
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#484A4B"
+    tools:context="com.example.dervis.autonomous.VideoActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/diagToolbar"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:background="@android:color/transparent"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/backArrowBtn"
+        android:layout_width="25dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:background="@android:color/transparent"
+        android:onClick="backOnclick"
+        android:rotation="180"
+        app:layout_constraintBottom_toBottomOf="@+id/diagToolbar"
+        app:layout_constraintStart_toStartOf="@+id/diagToolbar"
+        app:srcCompat="@drawable/arrow" />
+
+    <TextView
+        android:id="@+id/headerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Live view"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/diagToolbar"
+        app:layout_constraintEnd_toEndOf="@+id/diagToolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/diagToolbar" />
+
+    <ImageView
+        android:id="@+id/carGoggle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/diagToolbar"
+        app:srcCompat="@drawable/battery" />
+
+    <io.github.controlwear.virtual.joystick.android.JoystickView xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/joyStick"
+        android:layout_width="122dp"
+        android:layout_height="126dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        custom:JV_backgroundColor="#FFD8C4"
+        custom:JV_borderColor="#f4ab86"
+        custom:JV_borderWidth="4dp"
+        custom:JV_buttonColor="#FF6E40"
+        custom:JV_buttonSizeRatio="35%"
+        custom:JV_fixedCenter="false"
+        custom:JV_backgroundSizeRatio="65%"
+        custom:layout_constraintBottom_toBottomOf="parent"
+        custom:layout_constraintEnd_toEndOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
