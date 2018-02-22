@@ -4,7 +4,6 @@ import android.content.pm.ActivityInfo;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import java.util.concurrent.ExecutorService;
@@ -13,7 +12,7 @@ import java.util.concurrent.Executors;
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 
 public class VideoActivity extends AppCompatActivity {
-    private final static int INTERVAL = 200;
+    private final static int INTERVAL = 20;
     CarRest car = new CarRest();
     ExecutorService pool = Executors.newCachedThreadPool();
     Handler restLooper;
@@ -28,18 +27,15 @@ public class VideoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_video);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        JoystickView joystick = (JoystickView) findViewById(R.id.joyStick);
+        JoystickView joystick = findViewById(R.id.joyStick);
         joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
             @Override
             public void onMove(int angle, int strength) {
-                double str = strength * 5;
+                int str = strength * 5;
 
-                turnRate = str * Math.cos(Math.toRadians(angle));
+                turnRate = str / 5 * 3 * Math.cos(Math.toRadians(angle));
                 speed = str * Math.sin(Math.toRadians(angle));
 
-
-                Log.i("ange", "" + turnRate);
-                Log.i("str", "" + speed);
                 car.setData(speed, turnRate, false);
                 car.carDataService("/steer");
                 pool.execute(car.postService);
@@ -47,7 +43,7 @@ public class VideoActivity extends AppCompatActivity {
             }
         });
 
-        carStream = (ImageView) findViewById(R.id.carGoggle);
+        carStream = findViewById(R.id.carGoggle);
         restLooper = new Handler();
     }
 
@@ -62,6 +58,7 @@ public class VideoActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     carStream.setImageBitmap(car.getImage());
+                    System.gc();
                 }
             });
             restLooper.postDelayed(handlerTask, INTERVAL);

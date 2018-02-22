@@ -1,6 +1,8 @@
 from flask import Flask, send_file, make_response, Response, request
 import io
 import autonomous.car_controller
+from sanic import Sanic
+from sanic.response import json
 
 app = Flask(__name__)
 
@@ -20,25 +22,25 @@ def index():
 # GET
 @app.route('/image', methods=['GET'])
 def get_image():
-    buff = io.BytesIO()
+    """buff = io.BytesIO()
     pic = car.get_picture(0)
     pic.save(buff, "jpeg")
     buff.seek(0)
-    fileSend = send_file(buff, mimetype="image/jpeg", attachment_filename="pic.jpeg")
-    return make_response(fileSend)
+    fileSend = send_file(buff, mimetype="image/jpeg", attachment_filename="pic.jpeg")"""
+    return send_file("/home/dervis/apcar.png")
 
 
 @app.route('/speed', methods=['GET'])
 def get_speed():
-    wheel1 = car.get_wheel_speeds()[0] / 100
+    """wheel1 = car.get_wheel_speeds()[0] / 100
     wheel2 = car.get_wheel_speeds()[1] / 100
     wheel3 = car.get_wheel_speeds()[2] / 100
     wheel4 = car.get_wheel_speeds()[3] / 100
     allWheels = (wheel1 + wheel2 + wheel3 + wheel4) / 4
     speedDecimal = str(allWheels)
-    speed = speedDecimal[:3]
+    speed = speedDecimal[:3]"""
 
-    return make_response(speed)
+    return make_response("speed")
 
 
 """return make_response(speed) when connected to car
@@ -72,7 +74,7 @@ def set_steering():
     return make_response("ok")
 
 
-@app.route('/motorStop', methods=['post'])
+@app.route('/motorStop', methods=['POST'])
 def get_motor():
     lock = request.form['lock']
     print(str(lock))
@@ -83,7 +85,7 @@ def get_motor():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', threaded=True, port=5000)
+    app.run(host='0.0.0.0', port=5000)
     """threaded=true for more clients"""
 
 """
