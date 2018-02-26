@@ -19,7 +19,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/battery" />
+        app:srcCompat="@drawable/battery"
+        android:contentDescription="@string/battery_status_image" />
 
     <ImageView
         android:id="@+id/speedImg"
@@ -32,7 +33,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/batteryStatusImg"
-        app:srcCompat="@drawable/speed" />
+        app:srcCompat="@drawable/speed"
+        android:contentDescription="@string/speed_image" />
 
     <TextView
         android:id="@+id/currentSpeedText"
@@ -41,7 +43,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
-        android:text="1"
+        android:text="@string/_1"
         android:textAlignment="center"
         android:textColor="@android:color/holo_orange_dark"
         android:textSize="40sp"
@@ -57,10 +59,10 @@
         android:layout_height="25dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:text="m/s"
+        android:text="@string/m_s"
         android:textAlignment="center"
         android:textColor="@android:color/white"
-        android:textSize="18dp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/speedImg"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -79,7 +81,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         android:onClick="lockClicked"
-        />
+        android:contentDescription="@string/rectangle_lock" />
 
     <ImageView
         android:id="@+id/lockedImg"
@@ -87,14 +89,15 @@
         android:layout_height="55dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="@+id/rectLock"
         app:layout_constraintEnd_toEndOf="@+id/rectLock"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="@+id/rectLock"
-        app:srcCompat="@drawable/locked" />
+        app:srcCompat="@drawable/locked"
+        android:contentDescription="@string/locked_image" />
 
     <ImageView
         android:id="@+id/recLights"
@@ -107,7 +110,8 @@
         app:layout_constraintBottom_toTopOf="@+id/remoteRect"
         app:layout_constraintEnd_toStartOf="@+id/rectHorn"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/rectLock" />
+        app:layout_constraintStart_toEndOf="@+id/rectLock"
+        android:contentDescription="@string/rectangle_lights" />
 
     <ImageView
         android:id="@+id/lightsImg"
@@ -124,7 +128,9 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="@+id/recLights"
         app:layout_constraintTop_toTopOf="@+id/recLights"
-        app:srcCompat="@drawable/lights" />
+        app:srcCompat="@drawable/lights"
+        android:contentDescription="@string/light_image"
+        tools:ignore="RtlHardcoded" />
 
     <ImageView
         android:id="@+id/rectHorn"
@@ -138,7 +144,8 @@
         app:layout_constraintBottom_toTopOf="@+id/remoteRect"
         app:layout_constraintEnd_toStartOf="@+id/rectStop"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/recLights" />
+        app:layout_constraintStart_toEndOf="@+id/recLights"
+        android:contentDescription="@string/rectangle_horn" />
 
     <ImageView
         android:id="@+id/hornImg"
@@ -153,7 +160,8 @@
         app:layout_constraintEnd_toStartOf="@+id/rectStop"
         app:layout_constraintStart_toStartOf="@+id/rectHorn"
         app:layout_constraintTop_toTopOf="@+id/rectHorn"
-        app:srcCompat="@drawable/horn" />
+        app:srcCompat="@drawable/horn"
+        android:contentDescription="@string/horn_image" />
 
     <ImageView
         android:id="@+id/rectStop"
@@ -166,7 +174,8 @@
         app:layout_constraintBottom_toTopOf="@+id/remoteRect"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/rectHorn" />
+        app:layout_constraintStart_toEndOf="@+id/rectHorn"
+        android:contentDescription="@string/rectangle_stop" />
 
     <ImageView
         android:id="@+id/stopImg"
@@ -181,7 +190,8 @@
         app:layout_constraintEnd_toEndOf="@+id/rectStop"
         app:layout_constraintStart_toStartOf="@+id/rectStop"
         app:layout_constraintTop_toTopOf="@+id/rectStop"
-        app:srcCompat="@drawable/stop_2" />
+        app:srcCompat="@drawable/stop_2"
+        android:contentDescription="@string/stop_image" />
 
     <ImageView
         android:id="@+id/remoteRect"
@@ -193,14 +203,15 @@
         app:layout_constraintBottom_toTopOf="@+id/diagRect"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:onClick="remoteControlClick"/>
+        android:onClick="remoteControlClick"
+        android:contentDescription="@string/remote_rectangle" />
 
     <ImageView
         android:id="@+id/wheelImage"
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:baselineAlignBottom="false"
         android:scaleType="fitCenter"
@@ -216,7 +227,7 @@
         android:layout_height="25dp"
         android:layout_marginBottom="24dp"
         android:layout_marginStart="24dp"
-        android:text="Remote control"
+        android:text="@string/remote_control"
         android:textAlignment="textStart"
         android:textColor="@android:color/white"
         android:textSize="18sp"
@@ -235,20 +246,21 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:onClick="diagActivity"
-        />
+        android:contentDescription="@string/diag_rectangle" />
 
     <ImageView
         android:id="@+id/diagImg"
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="@+id/diagRect"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="@+id/diagRect"
-        app:srcCompat="@drawable/diag" />
+        app:srcCompat="@drawable/diag"
+        android:contentDescription="@string/dialog_image" />
 
     <TextView
         android:id="@+id/diagText"
@@ -256,10 +268,10 @@
         android:layout_height="25dp"
         android:layout_marginBottom="24dp"
         android:layout_marginStart="24dp"
-        android:text="Diagnostic"
+        android:text="@string/diagnostic"
         android:textAlignment="textStart"
         android:textColor="@android:color/white"
-        android:textSize="18dp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/locationRect"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -274,21 +286,23 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:onClick="LocationClicked"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        android:contentDescription="@string/location_rectangle" />
 
     <ImageView
         android:id="@+id/locationImg"
         android:layout_width="55dp"
         android:layout_height="55dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="@+id/locationRect"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="@+id/locationRect"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/position" />
+        app:srcCompat="@drawable/position"
+        android:contentDescription="@string/location_image" />
 
     <TextView
         android:id="@+id/LocationText"
@@ -296,10 +310,10 @@
         android:layout_height="25dp"
         android:layout_marginBottom="28dp"
         android:layout_marginStart="24dp"
-        android:text="Location"
+        android:text="@string/location"
         android:textAlignment="textStart"
         android:textColor="@android:color/white"
-        android:textSize="18dp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/locationRect"
         app:layout_constraintStart_toEndOf="@+id/locationImg" />
@@ -312,6 +326,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="@+id/batteryStatusImg"
         app:layout_constraintTop_toTopOf="@+id/batteryStatusImg"
-        app:srcCompat="@android:color/holo_green_light" />
+        android:background="#90CC42"
+        android:contentDescription="@string/battery_status" />
 
 </android.support.constraint.ConstraintLayout>

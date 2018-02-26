@@ -16,14 +16,13 @@ import java.util.Iterator;
 
 
 class CarRest {
-    public static Bitmap newImage;
-    private Bitmap oldImage;
+    private Bitmap newImage;
     private String currentSpeed;
     private String param;
     private double speed;
     private double turn;
     private boolean lock;
-    private int battery;
+    private Double battery = 0.0;
     private Double lat;
     private Double lng;
 
@@ -31,7 +30,7 @@ class CarRest {
         return currentSpeed;
     }
 
-    int getBattery() {
+    Double getBattery() {
         return battery;
     }
 
@@ -58,7 +57,7 @@ class CarRest {
         private HttpURLConnection connectionPost;
         @Override
         public void run() {
-            String url = "http://192.168.150.155:5000" + param;
+            String url = "http://192.168.1.73:5000" + param;
             String urlParameters = "speed=" + speed + "&turn=" + turn + "&lock=" + lock;
             Log.i("speed", "" + speed);
             Log.i("turn", "" + turn);
@@ -93,7 +92,7 @@ class CarRest {
         @Override
         public void run() {
             try {
-                URL carUrl = new URL("http://192.168.150.155:5000" + param);
+                URL carUrl = new URL("http://192.168.1.73:5000" + param);
                 connection = (HttpURLConnection) carUrl.openConnection();
                 // responseCode = connection.getResponseCode();
                 connection.setAllowUserInteraction(false);
@@ -104,6 +103,7 @@ class CarRest {
 
 
                 InputStream input;
+
                     switch (param) {
                         case "/speed":
                             input = connection.getInputStream();
@@ -146,8 +146,8 @@ class CarRest {
                 iStream.close();
                 break;
             case "/battery":
-                int maxBattery = 16800;
-                battery = maxBattery / Integer.parseInt(totalLines.toString()) / 100;
+                //Double maxBattery = 16800.0;
+                battery = Double.parseDouble(totalLines.toString());
                 iStream.close();
                 break;
             case "/location":

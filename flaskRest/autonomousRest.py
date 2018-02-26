@@ -23,7 +23,7 @@ def activate_background_work():
     def run_job():
         while True:
             pic = car.get_picture(0)
-            newImage = pic.resize((300, 300))
+            newImage = pic.resize((300, 200))
             newImage.save(buff, "jpeg", quality=30, optimize=True)
             with lock:
                 buff.seek(0)
@@ -61,19 +61,22 @@ def get_location():
 
 @app.route('/battery', methods=['GET'])
 def get_battery():
-    return make_response("battery")
+    """currentBattery = (car.get_voltage())
+    return make_response(str(currentBattery))"""
+    return make_response("16800")
 
 
 @app.route('/speed', methods=['GET'])
 def get_speed():
-    wheel1 = car.get_wheel_speeds()[0] / 100
+    """wheel1 = car.get_wheel_speeds()[0] / 100
     wheel2 = car.get_wheel_speeds()[1] / 100
     wheel3 = car.get_wheel_speeds()[2] / 100
     wheel4 = car.get_wheel_speeds()[3] / 100
     allWheels = (wheel1 + wheel2 + wheel3 + wheel4) / 4
     speedDecimal = str(allWheels)
     speed = speedDecimal[:3]
-    return make_response(speed)
+    return make_response(speed)"""
+    return make_response("0")
 
 
 @app.route('/steer', methods=['POST'])

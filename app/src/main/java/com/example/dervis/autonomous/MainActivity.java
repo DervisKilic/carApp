@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -17,12 +18,14 @@ import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity  {
     private final int INTERVAL = 1000;
-    int maxBattery;
-    int currentBattery;
+    int maxWidthBattery;
+    int currentWidthBattery;
+    Double currentBattery;
     TextView currentSpeed;
     ImageView batteryStatus;
     ImageView lock;
     Boolean locked;
+    Boolean batteryReady = false;
     CarRest car = new CarRest();
     ExecutorService pool = Executors.newCachedThreadPool();
     Handler handler;
@@ -36,8 +39,7 @@ public class MainActivity extends AppCompatActivity  {
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         animAlpha = AnimationUtils.loadAnimation(this, R.anim.alpha);
         batteryStatus = findViewById(R.id.batteryStatus);
-        maxBattery = batteryStatus.getLayoutParams().width;
-        checkBattery();
+        maxWidthBattery = batteryStatus.getLayoutParams().width;
 
         lock = findViewById(R.id.lockedImg);
         locked = true;
@@ -51,6 +53,8 @@ public class MainActivity extends AppCompatActivity  {
         public void run() {
             car.carDataService("/speed");
             pool.execute(car.getService);
+            checkBattery();
+            batteryReady = true;
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -133,14 +137,21 @@ public class MainActivity extends AppCompatActivity  {
     public void checkBattery() {
         car.carDataService("/battery");
         currentBattery = car.getBattery();
-        batteryStatus.getLayoutParams().width = maxBattery * currentBattery;
-        if (currentBattery < 0.2) {
-            batteryStatus.setColorFilter(Color.parseColor("#fffb1e"));
-        } else if (currentBattery < 0.1) {
-            batteryStatus.setColorFilter(Color.parseColor("#ed3636"));
 
-        } else {
-            batteryStatus.setColorFilter(Color.parseColor("#00ff00"));
+        if (batteryReady) {
+            Double maxBattery = 16800.0;
+            currentBattery = currentBattery / maxBattery;
+            currentWidthBattery = (int) (maxWidthBattery * currentBattery);
+            batteryStatus.getLayoutParams().width = currentWidthBattery;
+
+            if (currentBattery < 0.3 & currentBattery > 0.2) {
+                batteryStatus.setColorFilter(Color.parseColor("#fffb1e"));
+            } else if (currentBattery < 0.2) {
+                batteryStatus.setColorFilter(Color.parseColor("#ed3636"));
+
+            } else {
+                batteryStatus.setColorFilter(Color.parseColor("#90CC42"));
+            }
         }
     }
 }

@@ -18,6 +18,7 @@ public class VideoActivity extends AppCompatActivity {
     ExecutorService pool = Executors.newCachedThreadPool();
     Handler restLooper;
     ImageView carStream;
+    Bitmap newImage;
     public double turnRate;
     public double speed;
 
@@ -54,8 +55,14 @@ public class VideoActivity extends AppCompatActivity {
         public void run() {
             car.carDataService("/image");
             pool.execute(car.getService);
-            //newImage = CarRest.newImage;
-            carStream.setImageBitmap(CarRest.newImage);
+            newImage = car.getImage();
+            runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    carStream.setImageBitmap(newImage);
+                }
+            });
             restLooper.postDelayed(handlerTask, INTERVAL);
         }
     };

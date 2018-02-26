@@ -7,30 +7,35 @@
     android:background="#484A4B"
     tools:context="com.example.dervis.autonomous.VideoActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/diagToolbar"
+    <ImageView
+        android:id="@+id/carGoggle"
         android:layout_width="0dp"
-        android:layout_height="56dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         android:background="@android:color/transparent"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
+        android:contentDescription="@string/todo"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/battery" />
 
-    <ImageButton
-        android:id="@+id/backArrowBtn"
-        android:layout_width="25dp"
-        android:layout_height="30dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginStart="16dp"
-        android:background="@android:color/transparent"
-        android:onClick="backOnclick"
-        android:rotation="180"
-        app:layout_constraintBottom_toBottomOf="@+id/diagToolbar"
-        app:layout_constraintStart_toStartOf="@+id/diagToolbar"
-        app:srcCompat="@drawable/arrow"
-        android:contentDescription="@string/todo1" />
+    <io.github.controlwear.virtual.joystick.android.JoystickView xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/joyStick"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        custom:JV_backgroundColor="#FFD8C4"
+        custom:JV_backgroundSizeRatio="65%"
+        custom:JV_borderColor="#f4ab86"
+        custom:JV_borderWidth="4dp"
+        custom:JV_buttonColor="#FF6E40"
+        custom:JV_buttonSizeRatio="35%"
+        custom:JV_fixedCenter="false"
+        custom:layout_constraintBottom_toBottomOf="parent"
+        custom:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/headerText"
@@ -48,33 +53,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/diagToolbar" />
 
-    <ImageView
-        android:id="@+id/carGoggle"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/diagToolbar"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="56dp"
         android:background="@android:color/transparent"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/diagToolbar"
-        app:srcCompat="@drawable/battery"
-        android:contentDescription="@string/todo" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <io.github.controlwear.virtual.joystick.android.JoystickView xmlns:custom="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/joyStick"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        custom:JV_backgroundColor="#FFD8C4"
-        custom:JV_backgroundSizeRatio="65%"
-        custom:JV_borderColor="#f4ab86"
-        custom:JV_borderWidth="4dp"
-        custom:JV_buttonColor="#FF6E40"
-        custom:JV_buttonSizeRatio="35%"
-        custom:JV_fixedCenter="false"
-        custom:layout_constraintBottom_toBottomOf="parent"
-        custom:layout_constraintEnd_toEndOf="parent" />
+    <ImageButton
+        android:id="@+id/backArrowBtn"
+        android:layout_width="25dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        android:onClick="backOnclick"
+        android:rotation="180"
+        app:layout_constraintBottom_toBottomOf="@+id/diagToolbar"
+        app:layout_constraintStart_toStartOf="@+id/diagToolbar"
+        app:layout_constraintTop_toTopOf="@+id/headerText"
+        app:srcCompat="@drawable/arrow" />
 
 </android.support.constraint.ConstraintLayout>
