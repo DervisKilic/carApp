@@ -12,7 +12,7 @@ import java.util.concurrent.Executors;
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 
 public class VideoActivity extends AppCompatActivity {
-    private final static int INTERVAL = 20;
+    private final static int INTERVAL = 10;
     CarRest car = new CarRest();
     ExecutorService pool = Executors.newCachedThreadPool();
     Handler restLooper;
@@ -58,7 +58,6 @@ public class VideoActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     carStream.setImageBitmap(car.getImage());
-                    System.gc();
                 }
             });
             restLooper.postDelayed(handlerTask, INTERVAL);

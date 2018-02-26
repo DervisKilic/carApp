@@ -5,15 +5,21 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
 
+import static java.lang.System.in;
 import static java.lang.System.out;
 
 
@@ -25,6 +31,8 @@ class CarRest {
     private double turn;
     private boolean lock;
     private String battery;
+    private Double lat;
+    private Double lng;
 
     String getSpeed(){
         return currentSpeed;
@@ -32,6 +40,10 @@ class CarRest {
 
     String getBattery(){
         return battery;
+    }
+
+    Double[] getLoacation() {
+        return new Double[]{lat, lng};
     }
 
     Bitmap getImage(){
@@ -73,12 +85,12 @@ class CarRest {
 
                 try (DataOutputStream wr = new DataOutputStream(connectionPost.getOutputStream())) {
                     wr.write(postData);
-                    wr.close();
                 }
-                InputStream is = connectionPost.getInputStream();
-                connectionPost.connect();
-                readData(is);
-
+                InputStream is;
+                if (connectionPost.getInputStream() != null) {
+                    is = connectionPost.getInputStream();
+                    readData(is);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -94,25 +106,38 @@ class CarRest {
             try {
                 URL carUrl = new URL("http://192.168.150.155:5000" + param);
                 connection = (HttpURLConnection) carUrl.openConnection();
-                InputStream is = connection.getInputStream();
-                connection.setRequestMethod("GET");
                 // responseCode = connection.getResponseCode();
+                connection.setAllowUserInteraction(false);
+                connection.setInstanceFollowRedirects(true);
+                connection.setRequestMethod("GET");
                 connection.connect();
                 // Log.i("code", "" + responseCode);
-                if (is != null) {
+
+
+                InputStream input;
                     switch (param) {
                         case "/speed":
-                            readData(is);
+                            input = connection.getInputStream();
+                            readData(input);
+                            connection.disconnect();
                             break;
                         case "/battery":
-                            readData(is);
+                            input = connection.getInputStream();
+                            readData(input);
+                            connection.disconnect();
+                            break;
+                        case "/location":
+                            input = connection.getInputStream();
+                            readData(input);
+                            connection.disconnect();
                             break;
                         case "/image":
-                            readImage(is);
+                            BitmapFactory.Options options = new BitmapFactory.Options();
+                            options.inSampleSize = 1;
+                            input = connection.getInputStream();
+                            setImage(BitmapFactory.decodeStream(input, null, options));
                             break;
-                    }
-                } else {
-                    connection.disconnect();
+
                 }
 
             } catch (Exception e) {
@@ -128,16 +153,27 @@ class CarRest {
         while ((singleLine = reader.readLine()) != null) {
             totalLines.append(singleLine);
         }
-        if(param.equals("/speed")) {
-            currentSpeed = totalLines.toString();
-        }else if(param.equals("/battery")){
-            battery = totalLines.toString();
+        switch (param) {
+            case "/speed":
+                currentSpeed = totalLines.toString();
+                iStream.close();
+                break;
+            case "/battery":
+                battery = totalLines.toString();
+                iStream.close();
+                break;
+            case "/location":
+                iStream.close();
+                JSONArray jsonArray = new JSONArray(totalLines.toString());
+                JSONObject json = null;
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    json = jsonArray.getJSONObject(i);
+                    Iterator<String> keys = json.keys();
+                }
+                assert json != null;
+                lng = (Double) json.get("lng");
+                lat = (Double) json.get("lat");
+                break;
         }
-    }
-    private void readImage(InputStream iStream) throws Exception{
-        Bitmap bitmapOne = BitmapFactory.decodeStream(iStream);
-        System.gc();
-        Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmapOne, 200, 200, true);
-        setImage(scaledBitmap);
     }
 }
