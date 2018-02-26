@@ -4,6 +4,7 @@ from flask import Flask, send_file, make_response, request
 import io
 import json
 import autonomous.car_controller
+from PIL import Image
 
 app = Flask(__name__)
 
@@ -22,19 +23,27 @@ def activate_background_work():
     def run_job():
         while True:
             pic = car.get_picture(0)
-            pic.save(buff, "jpeg")
+            newImage = pic.resize((300, 300))
+            newImage.save(buff, "jpeg", quality=30, optimize=True)
             with lock:
                 buff.seek(0)
-            time.sleep(0.001)
+            time.sleep(0.005)
 
     thread = threading.Thread(target=run_job)
     thread.start()
-
 
 # root
 @app.route("/")
 def index():
     return "This is Root!"
+
+
+@app.route('/image', methods=['GET'])
+def get_image():
+    with lock:
+        data = buff.getvalue()
+    fileSend = send_file(io.BytesIO(data), mimetype="image/jpeg", attachment_filename="pic.jpeg")
+    return make_response(fileSend)
 
 
 @app.route('/location', methods=['GET'])
@@ -53,15 +62,6 @@ def get_location():
 @app.route('/battery', methods=['GET'])
 def get_battery():
     return make_response("battery")
-
-
-# GET
-@app.route('/image', methods=['GET'])
-def get_image():
-    with lock:
-        data = buff.getvalue()
-    fileSend = send_file(io.BytesIO(data), mimetype="image/jpeg", attachment_filename="pic.jpeg")
-    return make_response(fileSend)
 
 
 @app.route('/speed', methods=['GET'])

@@ -2,35 +2,28 @@ package com.example.dervis.autonomous;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
-import static java.lang.System.in;
-import static java.lang.System.out;
-
 
 class CarRest {
-    private Bitmap newImage;
+    public static Bitmap newImage;
+    private Bitmap oldImage;
     private String currentSpeed;
     private String param;
     private double speed;
     private double turn;
     private boolean lock;
-    private String battery;
+    private int battery;
     private Double lat;
     private Double lng;
 
@@ -38,7 +31,7 @@ class CarRest {
         return currentSpeed;
     }
 
-    String getBattery(){
+    int getBattery() {
         return battery;
     }
 
@@ -48,10 +41,6 @@ class CarRest {
 
     Bitmap getImage(){
         return newImage;
-    }
-
-    private void setImage(Bitmap image) {
-        newImage = image;
     }
 
     void carDataService(final String param) {
@@ -132,10 +121,8 @@ class CarRest {
                             connection.disconnect();
                             break;
                         case "/image":
-                            BitmapFactory.Options options = new BitmapFactory.Options();
-                            options.inSampleSize = 1;
                             input = connection.getInputStream();
-                            setImage(BitmapFactory.decodeStream(input, null, options));
+                            newImage = BitmapFactory.decodeStream(input);
                             break;
 
                 }
@@ -159,7 +146,8 @@ class CarRest {
                 iStream.close();
                 break;
             case "/battery":
-                battery = totalLines.toString();
+                int maxBattery = 16800;
+                battery = maxBattery / Integer.parseInt(totalLines.toString()) / 100;
                 iStream.close();
                 break;
             case "/location":

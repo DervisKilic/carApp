@@ -18,6 +18,7 @@ import java.util.concurrent.Executors;
 public class MainActivity extends AppCompatActivity  {
     private final int INTERVAL = 1000;
     int maxBattery;
+    int currentBattery;
     TextView currentSpeed;
     ImageView batteryStatus;
     ImageView lock;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity  {
         animAlpha = AnimationUtils.loadAnimation(this, R.anim.alpha);
         batteryStatus = findViewById(R.id.batteryStatus);
         maxBattery = batteryStatus.getLayoutParams().width;
+        checkBattery();
 
         lock = findViewById(R.id.lockedImg);
         locked = true;
@@ -125,8 +127,20 @@ public class MainActivity extends AppCompatActivity  {
         car.setData(0, 0, true);
         pool.execute(car.postService);
         lock.setImageResource(R.drawable.locked);
-
-        batteryStatus.getLayoutParams().width = (int) (batteryStatus.getLayoutParams().width * 0.2);
         locked = true;
+    }
+
+    public void checkBattery() {
+        car.carDataService("/battery");
+        currentBattery = car.getBattery();
+        batteryStatus.getLayoutParams().width = maxBattery * currentBattery;
+        if (currentBattery < 0.2) {
+            batteryStatus.setColorFilter(Color.parseColor("#fffb1e"));
+        } else if (currentBattery < 0.1) {
+            batteryStatus.setColorFilter(Color.parseColor("#ed3636"));
+
+        } else {
+            batteryStatus.setColorFilter(Color.parseColor("#00ff00"));
+        }
     }
 }

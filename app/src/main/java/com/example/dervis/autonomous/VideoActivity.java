@@ -1,6 +1,7 @@
 package com.example.dervis.autonomous;
 
 import android.content.pm.ActivityInfo;
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,7 +13,7 @@ import java.util.concurrent.Executors;
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 
 public class VideoActivity extends AppCompatActivity {
-    private final static int INTERVAL = 10;
+    private final static int INTERVAL = 20;
     CarRest car = new CarRest();
     ExecutorService pool = Executors.newCachedThreadPool();
     Handler restLooper;
@@ -53,13 +54,8 @@ public class VideoActivity extends AppCompatActivity {
         public void run() {
             car.carDataService("/image");
             pool.execute(car.getService);
-            runOnUiThread(new Runnable() {
-
-                @Override
-                public void run() {
-                    carStream.setImageBitmap(car.getImage());
-                }
-            });
+            //newImage = CarRest.newImage;
+            carStream.setImageBitmap(CarRest.newImage);
             restLooper.postDelayed(handlerTask, INTERVAL);
         }
     };
