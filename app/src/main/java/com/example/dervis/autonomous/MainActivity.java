@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -17,7 +16,7 @@ import java.util.concurrent.Executors;
 
 
 public class MainActivity extends AppCompatActivity  {
-    private final int INTERVAL = 1000;
+    private final Double MAXBATTERY = 16800.0;
     int maxWidthBattery;
     int currentWidthBattery;
     Double currentBattery;
@@ -25,10 +24,10 @@ public class MainActivity extends AppCompatActivity  {
     ImageView batteryStatus;
     ImageView lock;
     Boolean locked;
-    Boolean batteryReady = false;
     CarRest car = new CarRest();
     ExecutorService pool = Executors.newCachedThreadPool();
     Handler handler;
+    Handler handler2;
     Animation animAlpha;
 
 
@@ -40,10 +39,13 @@ public class MainActivity extends AppCompatActivity  {
         animAlpha = AnimationUtils.loadAnimation(this, R.anim.alpha);
         batteryStatus = findViewById(R.id.batteryStatus);
         maxWidthBattery = batteryStatus.getLayoutParams().width;
-
+        currentWidthBattery = maxWidthBattery;
+        currentSpeed = findViewById(R.id.currentSpeedText);
+        batteryStatus = findViewById(R.id.batteryStatus);
         lock = findViewById(R.id.lockedImg);
         locked = true;
         handler = new Handler();
+        handler2 = new Handler();
     }
 
 
@@ -51,28 +53,32 @@ public class MainActivity extends AppCompatActivity  {
     {
         @Override
         public void run() {
-            car.carDataService("/speed");
             pool.execute(car.getService);
-            checkBattery();
-            batteryReady = true;
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    currentSpeed.setText(car.getSpeed());
-                }
-            });
-            handler.postDelayed(handlerTask, INTERVAL);
+            car.carDataService("/speed");
+            currentSpeed.setText(car.getSpeed());
+            handler.postDelayed(handlerTask, 1000);
+        }
+    };
+
+    Runnable handlerTask2 = new Runnable() {
+        @Override
+        public void run() {
+            getBatteryStatus();
+            handler2.postDelayed(handlerTask2, 4500);
         }
     };
 
     void startRepeatingTask()
     {
         handlerTask.run();
+        handlerTask2.run();
     }
 
     void stopRepeatingTask()
     {
         handler.removeCallbacks(handlerTask);
+        handler2.removeCallbacks(handlerTask2);
+
     }
 
     public void diagActivity(View view) {
@@ -94,8 +100,6 @@ public class MainActivity extends AppCompatActivity  {
 
     protected void onStart() {
         super.onStart();
-        currentSpeed = findViewById(R.id.currentSpeedText);
-        batteryStatus = findViewById(R.id.batteryStatus);
         startRepeatingTask();
     }
 
@@ -134,24 +138,22 @@ public class MainActivity extends AppCompatActivity  {
         locked = true;
     }
 
-    public void checkBattery() {
+    public void getBatteryStatus() {
+        pool.execute(car.getService);
         car.carDataService("/battery");
         currentBattery = car.getBattery();
+        currentBattery = currentBattery / MAXBATTERY;
+        currentWidthBattery = (int) (maxWidthBattery * currentBattery);
+        batteryStatus.getLayoutParams().width = currentWidthBattery;
 
-        if (batteryReady) {
-            Double maxBattery = 16800.0;
-            currentBattery = currentBattery / maxBattery;
-            currentWidthBattery = (int) (maxWidthBattery * currentBattery);
-            batteryStatus.getLayoutParams().width = currentWidthBattery;
+        if (currentBattery < 0.3 && currentBattery > 0.2) {
+            batteryStatus.setBackgroundColor((Color.parseColor("#fffb1e")));
+        } else if (currentBattery < 0.2) {
+            batteryStatus.setBackgroundColor((Color.parseColor("#ed3636")));
 
-            if (currentBattery < 0.3 & currentBattery > 0.2) {
-                batteryStatus.setColorFilter(Color.parseColor("#fffb1e"));
-            } else if (currentBattery < 0.2) {
-                batteryStatus.setColorFilter(Color.parseColor("#ed3636"));
-
-            } else {
-                batteryStatus.setColorFilter(Color.parseColor("#90CC42"));
-            }
+        } else {
+            batteryStatus.setBackgroundColor((Color.parseColor("#90CC42")));
         }
+
     }
 }

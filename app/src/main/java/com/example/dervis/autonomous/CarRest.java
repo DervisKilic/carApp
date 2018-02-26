@@ -108,17 +108,14 @@ class CarRest {
                         case "/speed":
                             input = connection.getInputStream();
                             readData(input);
-                            connection.disconnect();
                             break;
                         case "/battery":
                             input = connection.getInputStream();
-                            readData(input);
-                            connection.disconnect();
+                            readBatteryData(input);
                             break;
                         case "/location":
                             input = connection.getInputStream();
                             readData(input);
-                            connection.disconnect();
                             break;
                         case "/image":
                             input = connection.getInputStream();
@@ -145,11 +142,6 @@ class CarRest {
                 currentSpeed = totalLines.toString();
                 iStream.close();
                 break;
-            case "/battery":
-                //Double maxBattery = 16800.0;
-                battery = Double.parseDouble(totalLines.toString());
-                iStream.close();
-                break;
             case "/location":
                 iStream.close();
                 JSONArray jsonArray = new JSONArray(totalLines.toString());
@@ -163,5 +155,16 @@ class CarRest {
                 lat = (Double) json.get("lat");
                 break;
         }
+    }
+
+    private void readBatteryData(InputStream iStream) throws Exception {
+        StringBuilder totalLines = new StringBuilder(iStream.available());
+        BufferedReader reader = new BufferedReader(new InputStreamReader(iStream));
+        String singleLine;
+        while ((singleLine = reader.readLine()) != null) {
+            totalLines.append(singleLine);
+        }
+        battery = Double.parseDouble(totalLines.toString());
+        iStream.close();
     }
 }
