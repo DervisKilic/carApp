@@ -20,7 +20,7 @@
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data android:name="com.google.android.geo.API_KEY"
@@ -36,7 +36,7 @@
         <activity android:name=".CarDataActivity" />
         <activity android:name=".ErrorActivity" />
         <activity android:name=".VideoActivity" />
-        <activity android:name=".LocationActivity"></activity>
+        <activity android:name=".LocationActivity" />
     </application>
 
 </manifest>
