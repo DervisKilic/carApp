@@ -5,8 +5,10 @@ import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toolbar;
 
+/**
+ * this class shows diagnostics for the car
+ */
 public class DiagnosticsActivity extends AppCompatActivity {
 
     @Override
@@ -20,7 +22,6 @@ public class DiagnosticsActivity extends AppCompatActivity {
 
     /**
      * takes user back to previous activity and closes this activity
-     *
      * @param view view
      */
     public void backArrow(View view) {

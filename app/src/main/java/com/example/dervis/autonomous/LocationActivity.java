@@ -20,8 +20,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * this class show a google maps fragment with position for user and a marker for car
+ */
 public class LocationActivity extends FragmentActivity implements OnMapReadyCallback {
-    private final static int INTERVAL = 1000;
     CarRest car = new CarRest();
     ExecutorService pool = Executors.newCachedThreadPool();
     Handler restLooper;
@@ -43,6 +45,11 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
         restLooper = new Handler();
     }
 
+    /**
+     * show the location of the car and the user
+     *
+     * @param googleMap this map
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -76,6 +83,9 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
     }
 
 
+    /**
+     * updates the location every 1000 milliseconds
+     */
     Runnable handlerTask = new Runnable() {
         @Override
         public void run() {
@@ -86,36 +96,47 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
                     onMapReady(mMap);
                 }
             });
-            restLooper.postDelayed(handlerTask, INTERVAL);
+            restLooper.postDelayed(handlerTask, 1000);
         }
     };
 
+    /**
+     * starts the location update handler
+     */
     void startRepeatingTask() {
         handlerTask.run();
     }
 
+    /**
+     * stops the location update handler
+     */
     void stopRepeatingTask() {
         restLooper.removeCallbacks(handlerTask);
     }
 
-    public void backOnclick(View view) {
-        finish();
-        stopRepeatingTask();
-        overridePendingTransition(R.anim.enter_back_anim, R.anim.exit_back_anim);
-    }
-
+    /**
+     * closes all task in this acticity
+     */
     protected void onDestroy() {
         super.onDestroy();
         stopRepeatingTask();
     }
 
+    /**
+     * called when entered this activity
+     */
     protected void onStart() {
         super.onStart();
         startRepeatingTask();
     }
 
+    /**
+     * goes back to previous activity
+     * @param view this view
+     */
     public void backArrowClicked(View view) {
         finish();
+        stopRepeatingTask();
         overridePendingTransition(R.anim.enter_back_anim, R.anim.exit_back_anim);
     }
 }

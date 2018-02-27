@@ -53,4 +53,5 @@
     <string name="application_software_version">Application Software version</string>
     <string name="_1_2">1.2</string>
     <string name="adas_software_version">ADAS Software version</string>
+    <string name="voltage">Voltage</string>
 </resources>

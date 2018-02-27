@@ -24,7 +24,7 @@ def activate_background_work():
         while True:
             pic = car.get_picture(0)
             newImage = pic.resize((300, 200))
-            newImage.save(buff, "jpeg", quality=30, optimize=True)
+            newImage.save(buff, "jpeg", quality=40, optimize=True)
             with lock:
                 buff.seek(0)
             time.sleep(0.005)

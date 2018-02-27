@@ -1,12 +1,14 @@
 package com.example.dervis.autonomous;
 
-import android.annotation.SuppressLint;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+/**
+ * this class shows the data for the car
+ */
 public class CarDataActivity extends AppCompatActivity {
     TextView batteryPercentText;
     int batteryPercent;
@@ -30,6 +32,9 @@ public class CarDataActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.enter_back_anim, R.anim.exit_back_anim);
     }
 
+    /**
+     * called on when changed to this activity, sets the text for battery
+     */
     protected void onStart() {
         super.onStart();
         batteryPercent = (int) Math.floor(MainActivity.currentBattery * 100);

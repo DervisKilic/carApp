@@ -14,8 +14,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
 
-class CarRest {
-    private Bitmap newImage;
+/**
+ * this class handles http calls to server
+ */
+public class CarRest {
+    private Bitmap image;
     private String currentSpeed;
     private double speed;
     private double turn;
@@ -24,34 +27,64 @@ class CarRest {
     private Double lat;
     private Double lng;
 
+    /**
+     * gets the current speed of the car
+     *
+     * @return this currentSpeed
+     */
     String getSpeed(){
         return currentSpeed;
     }
 
+    /**
+     * gets the current voltage of the car
+     * @return this battery
+     */
     Double getBattery() {
         return battery;
     }
 
+    /**
+     * gets the location of the car
+     * @return array with lat and lng
+     */
     Double[] getLoacation() {
         return new Double[]{lat, lng};
     }
 
-    Bitmap getImage(){
-        return newImage;
+    /**
+     * gets the image from car
+     * @return this image
+     */
+    Bitmap getImage() {
+        return image;
     }
 
+    /**
+     * sets the speed and turn rate for the car
+     * @param speed speed of the car
+     * @param turn turn rate of the car
+     */
     void setDataSteer(double speed, double turn) {
         this.speed = speed;
         this.turn = turn;
     }
 
+    /**
+     * sets the lock to false or true
+     * @param lock lock status
+     */
     void setDataLock(Boolean lock) {
         this.lock = lock;
 
     }
 
+    /**
+     * connects to server and sets data for steering
+     */
     Runnable postServiceSteer = new Runnable() {
         private HttpURLConnection connectionPost;
+
         @Override
         public void run() {
             String url = "http://192.168.150.155:5000/steer";
@@ -84,6 +117,9 @@ class CarRest {
         }
     };
 
+    /**
+     * connects to server and sets data for lock
+     */
     Runnable postServiceLock = new Runnable() {
         private HttpURLConnection connectionPost;
 
@@ -119,8 +155,12 @@ class CarRest {
         }
     };
 
+    /**
+     * connects to server and get data for image and sets variables to frontend
+     */
     Runnable getServiceImage = new Runnable() {
         private HttpURLConnection connection;
+
         @Override
         public void run() {
             try {
@@ -129,7 +169,7 @@ class CarRest {
                 connection.setRequestMethod("GET");
 
                 InputStream input = connection.getInputStream();
-                newImage = BitmapFactory.decodeStream(input);
+                image = BitmapFactory.decodeStream(input);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -137,6 +177,9 @@ class CarRest {
         }
     };
 
+    /**
+     * connects to server and get data for speed and sets variables to frontend
+     */
     Runnable getServiceSpeed = new Runnable() {
         private HttpURLConnection connection;
 
@@ -164,6 +207,9 @@ class CarRest {
         }
     };
 
+    /**
+     * connects to server and get data for location and sets variables to frontend
+     */
     Runnable getServiceLocation = new Runnable() {
         private HttpURLConnection connection;
 
@@ -200,6 +246,9 @@ class CarRest {
         }
     };
 
+    /**
+     * connects to server and get data for battery and sets variables to frontend
+     */
     Runnable getServiceBattery = new Runnable() {
         private HttpURLConnection connection;
 

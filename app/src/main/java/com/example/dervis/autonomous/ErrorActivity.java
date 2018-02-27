@@ -4,6 +4,9 @@ import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+/**
+ * this class shows errors
+ */
 public class ErrorActivity extends AppCompatActivity {
 
     @Override

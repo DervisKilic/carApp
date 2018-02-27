@@ -12,40 +12,23 @@ import java.util.concurrent.Executors;
 
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 
+/**
+ * this class shows handles the camera display settings and steering
+ */
 public class VideoActivity extends AppCompatActivity {
-
-    /**
-     * creates an instance of CarRest
-     */
     CarRest car = new CarRest();
-
-    /**
-     * creates a Executable thread pool
-     */
     ExecutorService pool = Executors.newCachedThreadPool();
-
-    /**
-     * repeat handler for REST calls
-     */
     Handler restLooper;
-
-    /**
-     * display screen for live view
-     */
     ImageView carStream;
-
-    /**
-     * Bitmap image
-     */
     Bitmap newImage;
 
     /**
-     * turn rate double
+     * turn rate
      */
     public double turnRate;
 
     /**
-     * speed double
+     * speed
      */
     public double speed;
 
@@ -73,8 +56,10 @@ public class VideoActivity extends AppCompatActivity {
         restLooper = new Handler();
     }
 
-    Runnable handlerTask = new Runnable()
-    {
+    /**
+     * displays a new image every 20 millisecond
+     */
+    Runnable handlerTask = new Runnable() {
         @Override
         public void run() {
             pool.execute(car.getServiceImage);
@@ -90,26 +75,42 @@ public class VideoActivity extends AppCompatActivity {
         }
     };
 
-    void startRepeatingTask()
-    {
+    /**
+     * starts handlerTask
+     */
+    void startRepeatingTask() {
         handlerTask.run();
     }
 
-    void stopRepeatingTask()
-    {
+    /**
+     * stops handlerTask
+     */
+    void stopRepeatingTask() {
         restLooper.removeCallbacks(handlerTask);
     }
 
+    /**
+     * goes back to previous activity.
+     *
+     * @param view this view
+     */
     public void backOnclick(View view) {
         finish();
         stopRepeatingTask();
         overridePendingTransition(R.anim.enter_back_anim, R.anim.exit_back_anim);
     }
 
+    /**
+     * stops everything in this class, calls on stopRepeatingTask.
+     */
     protected void onDestroy() {
         super.onDestroy();
         stopRepeatingTask();
     }
+
+    /**
+     * called on when changed to this activity, calls on startRepeatingTask.
+     */
     protected void onStart() {
         super.onStart();
         startRepeatingTask();

@@ -15,90 +15,29 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * the main activity that pops up when starting the application
+ * this class shows the main menu for the app.
+ * has battery, speed and a navigation menu.
  */
 public class MainActivity extends AppCompatActivity  {
-
     /**
-     * max width of the battery status
-     */
-    int maxWidthBattery;
-
-    /**
-     * current width of the battery status
-     */
-    int currentWidthBattery;
-
-    /**
-     * current battery in percent from the car
+     * the current battery in percent
      */
     public static Double currentBattery;
 
-    /**
-     * current voltage on battery
-     */
-    private Double currentVoltage;
-
-    /**
-     * current speed of the car displayed
-     */
+    int maxWidthBattery;
+    int currentWidthBattery;
     TextView currentSpeed;
-
-    /**
-     * battery status image
-     */
     ImageView batteryStatus;
-
-    /**
-     * lock image
-     */
     ImageView lock;
-
-    /**
-     * locked true/false
-     */
     Boolean locked;
-
-    /**
-     * stop image
-     */
     ImageView stopImg;
-
-    /**
-     * creates an instance of CarRest class
-     */
     CarRest car = new CarRest();
-
-    /**
-     * creates a Executable thread pool
-     */
     ExecutorService pool = Executors.newCachedThreadPool();
-
-    /**
-     * repeat handler for speed
-     */
     Handler speedHandler;
-
-    /**
-     * repeat handler for battery
-     */
     Handler batteryHandler;
-
-    /**
-     * animation for navigation
-     */
     Animation animAlpha;
-
-    /**
-     * text for voltage
-     */
     TextView voltage;
 
-    /**
-     * gets and sets resources
-     *
-     * @param savedInstanceState .
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -119,8 +58,8 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     /**
+     * calls on run().
      * start a new thread and calls car.getService.
-     * sets the route to /speed for the server.
      * gets the speed from server and sets it to the current speed.
      * repeats this task every 1000 milliseconds.
      */
@@ -163,9 +102,7 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     /**
-     * opens diagnostics activity
-     * animates the transition
-     * stops repeating tasks
+     * opens diagnostics activity and calls on stopsRepeatingTask
      * @param view view
      *
      */
@@ -176,9 +113,7 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     /**
-     * opens Video activity
-     * animates the transition
-     * stops repeating tasks
+     * opens Video activity and cals on stopsRepeatingTask
      * @param view view
      *
      */
@@ -189,8 +124,7 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     /**
-     * trigger when changing activity or shutting down activity
-     * stops repeating task
+     * stops everything in this class
      */
     protected void onDestroy() {
         super.onDestroy();
@@ -198,8 +132,7 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     /**
-     * trigger when changing to this activity
-     * starts repeating task
+     * called on when changed to this activity, calls on startRepeatingTask
      */
     protected void onStart() {
         super.onStart();
@@ -207,14 +140,7 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     /**
-     * animates lock icon change.
-     * checks if lock is locked, if locked
-     * sets the route to /lock for the server.
-     * sets data for the server for lock to false
-     * start a new thread and calls car.postService.
-     * changes lock icon to unlocked.
-     * changes locked to false.
-     * reverse all if lock is unlocked.
+     * changes the lock icon on clicked
      * @param view view
      */
     public void lockClicked(View view) {
@@ -235,11 +161,8 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     /**
-     * opens location activity
-     * animates the transition
-     * stops repeating tasks
+     * opens location activity and calls on stopRepeatingTask
      * @param view view
-     *
      */
     public void LocationClicked(View view) {
         startActivity(new Intent(MainActivity.this, LocationActivity.class));
@@ -248,14 +171,7 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     /**
-     * animates lock icon change
-     * checks if lock is locked, if locked
-     * sets the route to /lock for the server.
-     * sets data for the server for lock to true
-     * start a new thread and calls car.postService.
-     * changes lock icon to locked
-     * changes locked to true
-     * @param view view
+     * stops the "engine" to the car, and changes the lock icon
      */
     public void emergencyStopClick(View view) {
         stopImg.startAnimation(animAlpha);
@@ -266,17 +182,13 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     /**
-     * sets the route to /lock for the server.
-     * start a new thread and calls car.getService.
-     * set this current battery in percent to current battery from server
-     * sets the width of the batter status in based on how much percent left
-     * changes the color of battery status if below 30% and to red if bellow 20%
+     * changes battery icon based on how much voltage is left
      */
     public void getBatteryStatus() {
         Double maxBattery = 16800.0;
+        Double currentVoltage = car.getBattery() / 1000;
         pool.execute(car.getServiceBattery);
         currentBattery = car.getBattery();
-        currentVoltage = car.getBattery() / 1000;
         currentBattery = currentBattery / maxBattery;
         currentWidthBattery = (int) (maxWidthBattery * currentBattery);
         batteryStatus.getLayoutParams().width = currentWidthBattery;
