@@ -79,11 +79,7 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
     Runnable handlerTask = new Runnable() {
         @Override
         public void run() {
-
-            car.carDataService("/location");
-            pool.execute(car.getService);
-
-
+            pool.execute(car.getServiceLocation);
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

@@ -2,7 +2,6 @@ package com.example.dervis.autonomous;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.BufferedReader;
@@ -18,7 +17,6 @@ import java.util.Iterator;
 class CarRest {
     private Bitmap newImage;
     private String currentSpeed;
-    private String param;
     private double speed;
     private double turn;
     private boolean lock;
@@ -42,25 +40,22 @@ class CarRest {
         return newImage;
     }
 
-    void carDataService(final String param) {
-        this.param = param;
-    }
-
-    void setData(double speed, double turn, boolean lock) {
+    void setDataSteer(double speed, double turn) {
         this.speed = speed;
         this.turn = turn;
+    }
+
+    void setDataLock(Boolean lock) {
         this.lock = lock;
 
     }
 
-    Runnable postService = new Runnable() {
+    Runnable postServiceSteer = new Runnable() {
         private HttpURLConnection connectionPost;
         @Override
         public void run() {
-            String url = "http://192.168.1.73:5000" + param;
-            String urlParameters = "speed=" + speed + "&turn=" + turn + "&lock=" + lock;
-            Log.i("speed", "" + speed);
-            Log.i("turn", "" + turn);
+            String url = "http://192.168.150.155:5000/steer";
+            String urlParameters = "speed=" + speed + "&turn=" + turn;
             byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
             try {
@@ -74,55 +69,67 @@ class CarRest {
                 try (DataOutputStream wr = new DataOutputStream(connectionPost.getOutputStream())) {
                     wr.write(postData);
                 }
-                InputStream is;
                 if (connectionPost.getInputStream() != null) {
-                    is = connectionPost.getInputStream();
-                    readData(is);
+                    InputStream input = connectionPost.getInputStream();
+                    StringBuilder totalLines = new StringBuilder(input.available());
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+                    String singleLine;
+                    while ((singleLine = reader.readLine()) != null) {
+                        totalLines.append(singleLine);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-            } finally {
-                connectionPost.disconnect();
             }
         }
     };
 
-    Runnable getService = new Runnable() {
+    Runnable postServiceLock = new Runnable() {
+        private HttpURLConnection connectionPost;
+
+        @Override
+        public void run() {
+            String url = "http://192.168.150.155:5000/lock";
+            String urlParameters = "&lock=" + lock;
+            byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
+
+            try {
+                URL myurl = new URL(url);
+                connectionPost = (HttpURLConnection) myurl.openConnection();
+                connectionPost.setDoOutput(true);
+                connectionPost.setRequestMethod("POST");
+                connectionPost.setRequestProperty("User-Agent", "Java client");
+                connectionPost.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+                try (DataOutputStream wr = new DataOutputStream(connectionPost.getOutputStream())) {
+                    wr.write(postData);
+                }
+                if (connectionPost.getInputStream() != null) {
+                    InputStream input = connectionPost.getInputStream();
+                    StringBuilder totalLines = new StringBuilder(input.available());
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+                    String singleLine;
+                    while ((singleLine = reader.readLine()) != null) {
+                        totalLines.append(singleLine);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    Runnable getServiceImage = new Runnable() {
         private HttpURLConnection connection;
         @Override
         public void run() {
             try {
-                URL carUrl = new URL("http://192.168.1.73:5000" + param);
+                URL carUrl = new URL("http://192.168.150.155:5000/image");
                 connection = (HttpURLConnection) carUrl.openConnection();
-                // responseCode = connection.getResponseCode();
-                connection.setAllowUserInteraction(false);
-                connection.setInstanceFollowRedirects(true);
                 connection.setRequestMethod("GET");
-                connection.connect();
-                // Log.i("code", "" + responseCode);
 
-
-                InputStream input;
-
-                    switch (param) {
-                        case "/speed":
-                            input = connection.getInputStream();
-                            readData(input);
-                            break;
-                        case "/battery":
-                            input = connection.getInputStream();
-                            readBatteryData(input);
-                            break;
-                        case "/location":
-                            input = connection.getInputStream();
-                            readData(input);
-                            break;
-                        case "/image":
-                            input = connection.getInputStream();
-                            newImage = BitmapFactory.decodeStream(input);
-                            break;
-
-                }
+                InputStream input = connection.getInputStream();
+                newImage = BitmapFactory.decodeStream(input);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -130,41 +137,93 @@ class CarRest {
         }
     };
 
-    private void readData(InputStream iStream) throws Exception {
-        StringBuilder totalLines = new StringBuilder(iStream.available());
-        BufferedReader reader = new BufferedReader(new InputStreamReader(iStream));
-        String singleLine;
-        while ((singleLine = reader.readLine()) != null) {
-            totalLines.append(singleLine);
-        }
-        switch (param) {
-            case "/speed":
+    Runnable getServiceSpeed = new Runnable() {
+        private HttpURLConnection connection;
+
+        @Override
+        public void run() {
+            try {
+                URL carUrl = new URL("http://192.168.150.155:5000/speed");
+                connection = (HttpURLConnection) carUrl.openConnection();
+                connection.setAllowUserInteraction(false);
+                connection.setInstanceFollowRedirects(true);
+                connection.setRequestMethod("GET");
+
+                InputStream input = connection.getInputStream();
+                StringBuilder totalLines = new StringBuilder(input.available());
+                BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+                String singleLine;
+                while ((singleLine = reader.readLine()) != null) {
+                    totalLines.append(singleLine);
+                }
                 currentSpeed = totalLines.toString();
-                iStream.close();
-                break;
-            case "/location":
-                iStream.close();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    Runnable getServiceLocation = new Runnable() {
+        private HttpURLConnection connection;
+
+        @Override
+        public void run() {
+            try {
+                URL carUrl = new URL("http://192.168.150.155:5000/location");
+                connection = (HttpURLConnection) carUrl.openConnection();
+                connection.setAllowUserInteraction(false);
+                connection.setInstanceFollowRedirects(true);
+                connection.setRequestMethod("GET");
+
+                InputStream input = connection.getInputStream();
+                StringBuilder totalLines = new StringBuilder(input.available());
+                BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+                String singleLine;
+                while ((singleLine = reader.readLine()) != null) {
+                    totalLines.append(singleLine);
+                }
                 JSONArray jsonArray = new JSONArray(totalLines.toString());
                 JSONObject json = null;
                 for (int i = 0; i < jsonArray.length(); i++) {
                     json = jsonArray.getJSONObject(i);
                     Iterator<String> keys = json.keys();
                 }
-                assert json != null;
-                lng = (Double) json.get("lng");
-                lat = (Double) json.get("lat");
-                break;
-        }
-    }
+                if (json != null) {
+                    lng = (Double) json.get("lng");
+                    lat = (Double) json.get("lat");
+                }
 
-    private void readBatteryData(InputStream iStream) throws Exception {
-        StringBuilder totalLines = new StringBuilder(iStream.available());
-        BufferedReader reader = new BufferedReader(new InputStreamReader(iStream));
-        String singleLine;
-        while ((singleLine = reader.readLine()) != null) {
-            totalLines.append(singleLine);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-        battery = Double.parseDouble(totalLines.toString());
-        iStream.close();
-    }
+    };
+
+    Runnable getServiceBattery = new Runnable() {
+        private HttpURLConnection connection;
+
+        @Override
+        public void run() {
+            try {
+                URL carUrl = new URL("http://192.168.150.155:5000/battery");
+                connection = (HttpURLConnection) carUrl.openConnection();
+                connection.setAllowUserInteraction(false);
+                connection.setInstanceFollowRedirects(true);
+                connection.setRequestMethod("GET");
+
+                InputStream input = connection.getInputStream();
+                StringBuilder totalLines = new StringBuilder(input.available());
+                BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+                String singleLine;
+                while ((singleLine = reader.readLine()) != null) {
+                    totalLines.append(singleLine);
+                }
+                battery = Double.parseDouble(totalLines.toString());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    };
 }

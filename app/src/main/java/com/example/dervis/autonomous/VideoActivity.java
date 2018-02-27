@@ -13,13 +13,40 @@ import java.util.concurrent.Executors;
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 
 public class VideoActivity extends AppCompatActivity {
-    private final static int INTERVAL = 20;
+
+    /**
+     * creates an instance of CarRest
+     */
     CarRest car = new CarRest();
+
+    /**
+     * creates a Executable thread pool
+     */
     ExecutorService pool = Executors.newCachedThreadPool();
+
+    /**
+     * repeat handler for REST calls
+     */
     Handler restLooper;
+
+    /**
+     * display screen for live view
+     */
     ImageView carStream;
+
+    /**
+     * Bitmap image
+     */
     Bitmap newImage;
+
+    /**
+     * turn rate double
+     */
     public double turnRate;
+
+    /**
+     * speed double
+     */
     public double speed;
 
     @Override
@@ -37,11 +64,8 @@ public class VideoActivity extends AppCompatActivity {
 
                 turnRate = str / 5 * 3 * Math.cos(Math.toRadians(angle));
                 speed = str * Math.sin(Math.toRadians(angle));
-
-                car.setData(speed, turnRate, false);
-                car.carDataService("/steer");
-                pool.execute(car.postService);
-
+                car.setDataSteer(speed, turnRate);
+                pool.execute(car.postServiceSteer);
             }
         });
 
@@ -53,8 +77,7 @@ public class VideoActivity extends AppCompatActivity {
     {
         @Override
         public void run() {
-            car.carDataService("/image");
-            pool.execute(car.getService);
+            pool.execute(car.getServiceImage);
             newImage = car.getImage();
             runOnUiThread(new Runnable() {
 
@@ -63,7 +86,7 @@ public class VideoActivity extends AppCompatActivity {
                     carStream.setImageBitmap(newImage);
                 }
             });
-            restLooper.postDelayed(handlerTask, INTERVAL);
+            restLooper.postDelayed(handlerTask, 20);
         }
     };
 

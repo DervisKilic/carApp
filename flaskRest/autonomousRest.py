@@ -91,25 +91,14 @@ def set_steering():
 
 @app.route('/lock', methods=['POST'])
 def set_lock():
-    lock = request.form['lock']
+    lockStatus = request.form['lock']
 
-    if lock == "false":
-        print(str(lock))
-        lock = False
+    if lockStatus == "false":
+        print(str(lockStatus))
         car.arm_motors()
     else:
-        print(str(lock))
-        lock = True
+        print(str(lockStatus))
         car.disarm_motors()
-    return "ok"
-
-
-@app.route('/motorStop', methods=['POST'])
-def get_motor():
-    lock = request.form['lock']
-    print(str(lock))
-
-    car.disarm_motors()
     return "ok"
 
 

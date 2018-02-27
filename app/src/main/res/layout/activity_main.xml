@@ -329,4 +329,20 @@
         android:background="#90CC42"
         android:contentDescription="@string/battery_status" />
 
+    <TextView
+        android:id="@+id/voltageText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="Voltage"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/batteryStatus"
+        app:layout_constraintEnd_toEndOf="@+id/batteryStatus"
+        app:layout_constraintStart_toStartOf="@+id/batteryStatus"
+        app:layout_constraintTop_toTopOf="@+id/batteryStatus" />
+
 </android.support.constraint.ConstraintLayout>

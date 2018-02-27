@@ -18,11 +18,20 @@ public class DiagnosticsActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * takes user back to previous activity and closes this activity
+     *
+     * @param view view
+     */
     public void backArrow(View view) {
         finish();
         overridePendingTransition(R.anim.enter_back_anim, R.anim.exit_back_anim);
     }
 
+    /**
+     * takes user to car data activity
+     * @param view view
+     */
     public void carDataActivity(View view) {
         startActivity(new Intent(DiagnosticsActivity.this, CarDataActivity.class));
         overridePendingTransition(R.anim.enter_anim, R.anim.exit_anim);

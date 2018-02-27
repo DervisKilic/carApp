@@ -7,6 +7,16 @@
     android:background="#484A4B"
     tools:context="com.example.dervis.autonomous.LocationActivity">
 
+    <fragment
+        android:id="@+id/map"
+        class="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/diagToolbar" />
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/diagToolbar"
         android:layout_width="0dp"
@@ -17,19 +27,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/backArrowBtn"
-        android:layout_width="25dp"
-        android:layout_height="30dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginStart="16dp"
-        android:background="@android:color/transparent"
-        android:onClick="backArrowClicked"
-        android:rotation="180"
-        app:layout_constraintBottom_toBottomOf="@+id/diagToolbar"
-        app:layout_constraintStart_toStartOf="@+id/diagToolbar"
-        app:srcCompat="@drawable/arrow" />
 
     <TextView
         android:id="@+id/headerText"
@@ -47,13 +44,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/diagToolbar" />
 
-    <fragment
-        android:id="@+id/map"
-        class="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/diagToolbar" />
+    <ImageButton
+        android:id="@+id/backArrowBtn"
+        android:layout_width="25dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:background="@android:color/transparent"
+        android:onClick="backArrowClicked"
+        android:rotation="180"
+        app:layout_constraintBottom_toBottomOf="@+id/diagToolbar"
+        app:layout_constraintStart_toStartOf="@+id/diagToolbar"
+        app:srcCompat="@drawable/arrow" />
 </android.support.constraint.ConstraintLayout>
