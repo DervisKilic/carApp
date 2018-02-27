@@ -11,6 +11,7 @@ import android.widget.TextView;
  */
 public class CarDataActivity extends AppCompatActivity {
     TextView batteryPercentText;
+    TextView odometer;
     int batteryPercent;
 
     @Override
@@ -19,6 +20,7 @@ public class CarDataActivity extends AppCompatActivity {
         setContentView(R.layout.activity_car_data);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+        odometer = findViewById(R.id.odometerText);
         batteryPercentText = (findViewById(R.id.batteryValueText));
     }
 
@@ -37,6 +39,7 @@ public class CarDataActivity extends AppCompatActivity {
      */
     protected void onStart() {
         super.onStart();
+        odometer.setText(MainActivity.currentOdometer + "m");
         batteryPercent = (int) Math.floor(MainActivity.currentBattery * 100);
         batteryPercentText.setText(batteryPercent + "%");
     }

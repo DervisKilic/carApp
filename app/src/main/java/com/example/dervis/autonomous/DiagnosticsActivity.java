@@ -5,11 +5,13 @@ import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 /**
  * this class shows diagnostics for the car
  */
 public class DiagnosticsActivity extends AppCompatActivity {
+    TextView odometer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +19,8 @@ public class DiagnosticsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_diagnostics);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-
+        odometer = findViewById(R.id.odometerText);
+        odometer.setText(MainActivity.currentOdometer);
     }
 
     /**
@@ -36,5 +39,13 @@ public class DiagnosticsActivity extends AppCompatActivity {
     public void carDataActivity(View view) {
         startActivity(new Intent(DiagnosticsActivity.this, CarDataActivity.class));
         overridePendingTransition(R.anim.enter_anim, R.anim.exit_anim);
+    }
+
+    /**
+     * called on when changed to this activity, sets the text for odometer
+     */
+    protected void onStart() {
+        super.onStart();
+        odometer.setText(MainActivity.currentOdometer + "m");
     }
 }

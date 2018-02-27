@@ -24,17 +24,25 @@ public class MainActivity extends AppCompatActivity  {
      */
     public static Double currentBattery;
 
+    /**
+     * the current odometer in meters
+     */
+    public static int currentOdometer;
+
     int maxWidthBattery;
     int currentWidthBattery;
     TextView currentSpeed;
     ImageView batteryStatus;
-    ImageView lock;
+    ImageView lockImg;
     Boolean locked;
+    Boolean lightsOn;
     ImageView stopImg;
+    ImageView lightsImg;
     CarRest car = new CarRest();
     ExecutorService pool = Executors.newCachedThreadPool();
     Handler speedHandler;
     Handler batteryHandler;
+    Handler odometerHandler;
     Animation animAlpha;
     TextView voltage;
 
@@ -50,11 +58,13 @@ public class MainActivity extends AppCompatActivity  {
         currentSpeed = findViewById(R.id.currentSpeedText);
         batteryStatus = findViewById(R.id.batteryStatus);
         voltage = findViewById(R.id.voltageText);
-        lock = findViewById(R.id.lockedImg);
+        lockImg = findViewById(R.id.lockedImg);
         stopImg = findViewById(R.id.stopImg);
+        lightsImg = findViewById(R.id.lightsImg);
         locked = true;
         speedHandler = new Handler();
         batteryHandler = new Handler();
+        odometerHandler = new Handler();
     }
 
     /**
@@ -63,12 +73,12 @@ public class MainActivity extends AppCompatActivity  {
      * gets the speed from server and sets it to the current speed.
      * repeats this task every 1000 milliseconds.
      */
-    Runnable handlerTask = new Runnable() {
+    Runnable speedHandlerTask = new Runnable() {
         @Override
         public void run() {
             pool.execute(car.getServiceSpeed);
             currentSpeed.setText(car.getSpeed());
-            speedHandler.postDelayed(handlerTask, 1000);
+            speedHandler.postDelayed(speedHandlerTask, 1000);
         }
     };
 
@@ -76,28 +86,37 @@ public class MainActivity extends AppCompatActivity  {
      * calls getBatteryStatus method.
      * repeats this task ever 4500 milliseconds.
      */
-    Runnable handlerTask2 = new Runnable() {
+    Runnable batteryHandlerTask = new Runnable() {
         @Override
         public void run() {
             getBatteryStatus();
-            batteryHandler.postDelayed(handlerTask2, 4500);
+            batteryHandler.postDelayed(batteryHandlerTask, 4500);
+        }
+    };
+
+    Runnable odometerHandlerTask = new Runnable() {
+        @Override
+        public void run() {
+            pool.execute(car.getServiceOdometer);
+            currentOdometer = car.getOdometer();
+            odometerHandler.postDelayed(odometerHandlerTask, 5500);
         }
     };
 
     /**
-     * starts handlerTask and handlerTask2
+     * starts speedHandlerTask and batteryHandlerTask
      */
     void startRepeatingTask() {
-        handlerTask.run();
-        handlerTask2.run();
+        speedHandlerTask.run();
+        batteryHandlerTask.run();
     }
 
     /**
-     * stops handlerTask and handlerTask2
+     * stops speedHandlerTask and batteryHandlerTask
      */
     void stopRepeatingTask() {
-        speedHandler.removeCallbacks(handlerTask);
-        batteryHandler.removeCallbacks(handlerTask2);
+        speedHandler.removeCallbacks(speedHandlerTask);
+        batteryHandler.removeCallbacks(batteryHandlerTask);
 
     }
 
@@ -140,22 +159,22 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     /**
-     * changes the lock icon on clicked
+     * changes the lock icon on clicked and calls server to change status of lock
      * @param view view
      */
     public void lockClicked(View view) {
 
-        lock.startAnimation(animAlpha);
+        lockImg.startAnimation(animAlpha);
 
         if(locked) {
             car.setDataLock(false);
             pool.execute(car.postServiceLock);
-            lock.setImageResource(R.drawable.unlocked);
+            lockImg.setImageResource(R.drawable.unlocked);
             locked = false;
         } else {
             car.setDataLock(true);
             pool.execute(car.postServiceLock);
-            lock.setImageResource(R.drawable.locked);
+            lockImg.setImageResource(R.drawable.locked);
             locked = true;
         }
     }
@@ -164,7 +183,7 @@ public class MainActivity extends AppCompatActivity  {
      * opens location activity and calls on stopRepeatingTask
      * @param view view
      */
-    public void LocationClicked(View view) {
+    public void locationClicked(View view) {
         startActivity(new Intent(MainActivity.this, LocationActivity.class));
         overridePendingTransition(R.anim.enter_anim, R.anim.exit_anim);
         stopRepeatingTask();
@@ -177,12 +196,12 @@ public class MainActivity extends AppCompatActivity  {
         stopImg.startAnimation(animAlpha);
         car.setDataLock(true);
         pool.execute(car.postServiceLock);
-        lock.setImageResource(R.drawable.locked);
+        lockImg.setImageResource(R.drawable.locked);
         locked = true;
     }
 
     /**
-     * changes battery icon based on how much voltage is left
+     * calls the server and changes battery icon based on how much voltage is left
      */
     public void getBatteryStatus() {
         Double maxBattery = 16800.0;
@@ -201,6 +220,25 @@ public class MainActivity extends AppCompatActivity  {
 
         } else {
             batteryStatus.setBackgroundColor((Color.parseColor("#90CC42")));
+        }
+    }
+
+    /**
+     * calls server to change status of lights
+     *
+     * @param view view
+     */
+    public void lightsClicked(View view) {
+        lightsImg.startAnimation(animAlpha);
+
+        if (lightsOn) {
+            car.setDataLights(false);
+            pool.execute(car.postServiceLights);
+            lightsOn = false;
+        } else {
+            car.setDataLights(true);
+            pool.execute(car.postServiceLights);
+            lightsOn = true;
         }
     }
 }

@@ -24,7 +24,7 @@ def activate_background_work():
         while True:
             pic = car.get_picture(0)
             newImage = pic.resize((300, 200))
-            newImage.save(buff, "jpeg", quality=40, optimize=True)
+            newImage.save(buff, "jpeg", quality=50, optimize=True)
             with lock:
                 buff.seek(0)
             time.sleep(0.005)
@@ -77,6 +77,11 @@ def get_speed():
     return make_response(speed)
 
 
+@app.route('/odometer', methods=['GET'])
+def get_odometer():
+    return make_response("50")
+
+
 @app.route('/steer', methods=['POST'])
 def set_steering():
     print(request.form['turn'])
@@ -94,11 +99,20 @@ def set_lock():
     lockStatus = request.form['lock']
 
     if lockStatus == "false":
-        print(str(lockStatus))
         car.arm_motors()
     else:
-        print(str(lockStatus))
         car.disarm_motors()
+    return "ok"
+
+
+@app.route('/lock', methods=['POST'])
+def set_lights():
+    lightsOn = request.form['lights']
+
+    if lightsOn == "true":
+        """car.arm_lights()"""
+    else:
+        """car.disarm_lights()"""
     return "ok"
 
 

@@ -71,19 +71,19 @@ public class VideoActivity extends AppCompatActivity {
                     carStream.setImageBitmap(newImage);
                 }
             });
-            restLooper.postDelayed(handlerTask, 20);
+            restLooper.postDelayed(handlerTask, 10);
         }
     };
 
     /**
-     * starts handlerTask
+     * starts speedHandlerTask
      */
     void startRepeatingTask() {
         handlerTask.run();
     }
 
     /**
-     * stops handlerTask
+     * stops speedHandlerTask
      */
     void stopRepeatingTask() {
         restLooper.removeCallbacks(handlerTask);

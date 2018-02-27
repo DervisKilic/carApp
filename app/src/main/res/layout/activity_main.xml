@@ -107,6 +107,7 @@
         android:layout_marginStart="1dp"
         android:background="#2D2D2D"
         android:scaleType="center"
+        android:onClick="lightsClicked"
         app:layout_constraintBottom_toTopOf="@+id/remoteRect"
         app:layout_constraintEnd_toStartOf="@+id/rectHorn"
         app:layout_constraintHorizontal_bias="0.5"
@@ -285,7 +286,7 @@
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:onClick="LocationClicked"
+        android:onClick="locationClicked"
         app:layout_constraintRight_toRightOf="parent"
         android:contentDescription="@string/location_rectangle" />
 
