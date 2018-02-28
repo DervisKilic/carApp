@@ -31,7 +31,6 @@ public class CarRest {
 
     /**
      * gets the current speed of the car
-     *
      * @return this currentSpeed
      */
     String getSpeed(){
@@ -40,7 +39,7 @@ public class CarRest {
 
     /**
      * gets the current voltage of the car
-     * @return this battery
+     * @return this battery voltage
      */
     Double getBattery() {
         return battery;
@@ -64,7 +63,6 @@ public class CarRest {
 
     /**
      * gets the current odometer of the car
-     *
      * @return this odometer
      */
     String getOdometer() {
@@ -91,7 +89,6 @@ public class CarRest {
 
     /**
      * sets the lock to false or true
-     *
      * @param lights lock status
      */
     void setDataLights(Boolean lights) {
@@ -111,8 +108,8 @@ public class CarRest {
             byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
             try {
-                URL myurl = new URL(url);
-                connectionPost = (HttpURLConnection) myurl.openConnection();
+                URL localUrl = new URL(url);
+                connectionPost = (HttpURLConnection) localUrl.openConnection();
                 connectionPost.setDoOutput(true);
                 connectionPost.setRequestMethod("POST");
                 connectionPost.setRequestProperty("User-Agent", "Java client");
@@ -149,8 +146,8 @@ public class CarRest {
             byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
             try {
-                URL myurl = new URL(url);
-                connectionPost = (HttpURLConnection) myurl.openConnection();
+                URL localUrl = new URL(url);
+                connectionPost = (HttpURLConnection) localUrl.openConnection();
                 connectionPost.setDoOutput(true);
                 connectionPost.setRequestMethod("POST");
                 connectionPost.setRequestProperty("User-Agent", "Java client");
@@ -187,8 +184,8 @@ public class CarRest {
             byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
             try {
-                URL myurl = new URL(url);
-                connectionPost = (HttpURLConnection) myurl.openConnection();
+                URL localUrl = new URL(url);
+                connectionPost = (HttpURLConnection) localUrl.openConnection();
                 connectionPost.setDoOutput(true);
                 connectionPost.setRequestMethod("POST");
                 connectionPost.setRequestProperty("User-Agent", "Java client");
@@ -213,7 +210,7 @@ public class CarRest {
     };
 
     /**
-     * connects to server and gets data for image and sets variable to frontend
+     * connects to server and gets data for image and sets variable to frontend to get
      */
     Runnable getServiceImage = new Runnable() {
         private HttpURLConnection connection;
@@ -221,8 +218,8 @@ public class CarRest {
         @Override
         public void run() {
             try {
-                URL carUrl = new URL("http://192.168.150.155:5000/image");
-                connection = (HttpURLConnection) carUrl.openConnection();
+                URL localUrl = new URL("http://192.168.150.155:5000/image");
+                connection = (HttpURLConnection) localUrl.openConnection();
                 connection.setRequestMethod("GET");
 
                 InputStream input = connection.getInputStream();
@@ -235,7 +232,7 @@ public class CarRest {
     };
 
     /**
-     * connects to server and gets data for speed and sets variable to frontend
+     * connects to server and gets data for speed and sets variable to frontend to get
      */
     Runnable getServiceSpeed = new Runnable() {
         private HttpURLConnection connection;
@@ -243,8 +240,8 @@ public class CarRest {
         @Override
         public void run() {
             try {
-                URL carUrl = new URL("http://192.168.150.155:5000/speed");
-                connection = (HttpURLConnection) carUrl.openConnection();
+                URL localUrl = new URL("http://192.168.150.155:5000/speed");
+                connection = (HttpURLConnection) localUrl.openConnection();
                 connection.setAllowUserInteraction(false);
                 connection.setInstanceFollowRedirects(true);
                 connection.setRequestMethod("GET");
@@ -265,7 +262,7 @@ public class CarRest {
     };
 
     /**
-     * connects to server and gets data for location and sets variables to frontend
+     * connects to server and gets data for location and sets variables to frontend to get
      */
     Runnable getServiceLocation = new Runnable() {
         private HttpURLConnection connection;
@@ -273,8 +270,8 @@ public class CarRest {
         @Override
         public void run() {
             try {
-                URL carUrl = new URL("http://192.168.150.155:5000/location");
-                connection = (HttpURLConnection) carUrl.openConnection();
+                URL localUrl = new URL("http://192.168.150.155:5000/location");
+                connection = (HttpURLConnection) localUrl.openConnection();
                 connection.setAllowUserInteraction(false);
                 connection.setInstanceFollowRedirects(true);
                 connection.setRequestMethod("GET");
@@ -304,7 +301,7 @@ public class CarRest {
     };
 
     /**
-     * connects to server and gets data for battery and sets variable to frontend
+     * connects to server and gets data for battery and sets variable to frontend to get
      */
     Runnable getServiceBattery = new Runnable() {
         private HttpURLConnection connection;
@@ -312,8 +309,8 @@ public class CarRest {
         @Override
         public void run() {
             try {
-                URL carUrl = new URL("http://192.168.150.155:5000/battery");
-                connection = (HttpURLConnection) carUrl.openConnection();
+                URL localUrl = new URL("http://192.168.150.155:5000/battery");
+                connection = (HttpURLConnection) localUrl.openConnection();
                 connection.setAllowUserInteraction(false);
                 connection.setInstanceFollowRedirects(true);
                 connection.setRequestMethod("GET");
@@ -334,7 +331,7 @@ public class CarRest {
     };
 
     /**
-     * connects to server and gets data for odometer and sets variable to frontend
+     * connects to server and gets data for odometer and sets variable to frontend to get
      */
     Runnable getServiceOdometer = new Runnable() {
         private HttpURLConnection connection;
@@ -342,8 +339,8 @@ public class CarRest {
         @Override
         public void run() {
             try {
-                URL carUrl = new URL("http://192.168.150.155:5000/odometer");
-                connection = (HttpURLConnection) carUrl.openConnection();
+                URL localUrl = new URL("http://192.168.150.155:5000/odometer");
+                connection = (HttpURLConnection) localUrl.openConnection();
                 connection.setAllowUserInteraction(false);
                 connection.setInstanceFollowRedirects(true);
                 connection.setRequestMethod("GET");

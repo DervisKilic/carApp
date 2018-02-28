@@ -26,7 +26,6 @@ public class CarDataActivity extends AppCompatActivity {
 
     /**
      * takes user back to previous activity and closes this activity
-     *
      * @param view view
      */
     public void backArrow(View view) {
@@ -35,7 +34,7 @@ public class CarDataActivity extends AppCompatActivity {
     }
 
     /**
-     * called on when changed to this activity, sets the text for battery
+     * called on when entered this activity, sets the text for odometer
      */
     protected void onStart() {
         super.onStart();

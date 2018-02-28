@@ -44,8 +44,8 @@ public class MainActivity extends AppCompatActivity  {
     Boolean lightsOn = false;
     ImageView stopImg;
     ImageView lightsImg;
-    CarRest car = new CarRest();
-    ExecutorService pool = Executors.newCachedThreadPool();
+    CarRest car;
+    ExecutorService pool;
     Handler speedHandler;
     Handler batteryHandler;
     Handler odometerHandler;
@@ -68,14 +68,15 @@ public class MainActivity extends AppCompatActivity  {
         stopImg = findViewById(R.id.stopImg);
         lightsImg = findViewById(R.id.lightsImg);
         locked = true;
+        car = new CarRest();
+        pool = Executors.newCachedThreadPool();
         speedHandler = new Handler();
         batteryHandler = new Handler();
         odometerHandler = new Handler();
     }
 
     /**
-     * calls on run().
-     * start a new thread and calls car.getService.
+     * start a new thread and calls car.getServiceSpeed.
      * gets the speed from server and sets it to the current speed.
      * repeats this task every 1000 milliseconds.
      */
@@ -101,6 +102,11 @@ public class MainActivity extends AppCompatActivity  {
         }
     };
 
+    /**
+     * start a new thread and calls car.getServiceOdometer.
+     * gets the odometer from server and sets it to the current odometer.
+     * repeats this task every 1000 milliseconds.
+     */
     Runnable odometerHandlerTask = new Runnable() {
         @Override
         public void run() {
@@ -111,7 +117,7 @@ public class MainActivity extends AppCompatActivity  {
     };
 
     /**
-     * starts speedHandlerTask and batteryHandlerTask
+     * starts speedHandlerTask, odometerHandlerTask and batteryHandlerTask
      */
     void startRepeatingTask() {
         speedHandlerTask.run();
@@ -120,7 +126,7 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     /**
-     * stops speedHandlerTask and batteryHandlerTask
+     * stops batteryHandlerTask, odometerHandlerTask and - speedHandlerTask if Boolean is true
      */
     void stopRepeatingTask() {
         if (stopSpeedHandler) {
@@ -132,7 +138,7 @@ public class MainActivity extends AppCompatActivity  {
 
     /**
      * opens diagnostics activity and calls on stopsRepeatingTask
-     * @param view view
+     * @param view this view
      *
      */
     public void diagActivity(View view) {
@@ -143,8 +149,8 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     /**
-     * opens Video activity and cals on stopsRepeatingTask
-     * @param view view
+     * opens Video activity and calls on stopsRepeatingTask
+     * @param view this view
      *
      */
     public void remoteControlClick(View view) {
@@ -164,7 +170,7 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     /**
-     * called on when changed to this activity, calls on startRepeatingTask
+     * called on when entered this activity, calls on startRepeatingTask
      */
     protected void onStart() {
         super.onStart();
@@ -239,7 +245,6 @@ public class MainActivity extends AppCompatActivity  {
 
     /**
      * calls server to change status of lights
-     *
      * @param view view
      */
     public void lightsClicked(View view) {

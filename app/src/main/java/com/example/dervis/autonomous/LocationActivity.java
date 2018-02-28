@@ -21,12 +21,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * this class show a google maps fragment with position for user and a marker for car
+ * this class show a google maps view with position for user and a marker for the car
  */
 public class LocationActivity extends FragmentActivity implements OnMapReadyCallback {
     CarRest car = new CarRest();
     ExecutorService pool = Executors.newCachedThreadPool();
-    Handler restLooper;
+    Handler locationHandler;
     GoogleMap mMap;
     Marker carLocationMarker;
     LatLng carLocation;
@@ -42,12 +42,11 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        restLooper = new Handler();
+        locationHandler = new Handler();
     }
 
     /**
-     * show the location of the car and the user
-     *
+     * show the location of the car and the user plus zooms in to the car marker
      * @param googleMap this map
      */
     @Override
@@ -82,11 +81,10 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
         }
     }
 
-
     /**
      * updates the location every 1000 milliseconds
      */
-    Runnable handlerTask = new Runnable() {
+    Runnable locationHandlerTask = new Runnable() {
         @Override
         public void run() {
             pool.execute(car.getServiceLocation);
@@ -96,7 +94,7 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
                     onMapReady(mMap);
                 }
             });
-            restLooper.postDelayed(handlerTask, 1000);
+            locationHandler.postDelayed(locationHandlerTask, 1000);
         }
     };
 
@@ -104,18 +102,18 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
      * starts the location update handler
      */
     void startRepeatingTask() {
-        handlerTask.run();
+        locationHandlerTask.run();
     }
 
     /**
      * stops the location update handler
      */
     void stopRepeatingTask() {
-        restLooper.removeCallbacks(handlerTask);
+        locationHandler.removeCallbacks(locationHandlerTask);
     }
 
     /**
-     * closes all task in this acticity
+     * closes all task in this activity
      */
     protected void onDestroy() {
         super.onDestroy();
@@ -131,7 +129,7 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
     }
 
     /**
-     * goes back to previous activity
+     * goes back to previous activity and closes this activity
      * @param view this view
      */
     public void backArrowClicked(View view) {

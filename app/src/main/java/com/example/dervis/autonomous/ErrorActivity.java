@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 /**
- * this class shows errors
+ * this class shows errors (not used at the moment)
  */
 public class ErrorActivity extends AppCompatActivity {
 

@@ -32,7 +32,7 @@ public class DiagnosticsActivity extends AppCompatActivity {
     }
 
     /**
-     * takes user to car data activity
+     * takes user to car data activity and closes this activity
      * @param view view
      */
     public void carDataActivity(View view) {
@@ -41,7 +41,7 @@ public class DiagnosticsActivity extends AppCompatActivity {
     }
 
     /**
-     * called on when changed to this activity, sets the text for odometer
+     * called on when entered this activity and sets the text for odometer
      */
     protected void onStart() {
         super.onStart();

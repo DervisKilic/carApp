@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 
 /**
- * this class shows handles the camera display settings and steering
+ * this class handles the camera display settings and steering
  */
 public class VideoActivity extends AppCompatActivity {
     CarRest car = new CarRest();
@@ -41,8 +41,6 @@ public class VideoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_video);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        speedText = findViewById(R.id.speedText);
-
         JoystickView joystick = findViewById(R.id.joyStick);
         joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
             @Override
@@ -56,13 +54,14 @@ public class VideoActivity extends AppCompatActivity {
             }
         });
 
+        speedText = findViewById(R.id.speedText);
         carStream = findViewById(R.id.carGoggle);
         imageHandler = new Handler();
         speedHandler = new Handler();
     }
 
     /**
-     * displays a new image every 20 millisecond
+     * get a new image from server and displays the image every 10 milliseconds
      */
     Runnable imageHandlerTask = new Runnable() {
         @Override
@@ -80,6 +79,9 @@ public class VideoActivity extends AppCompatActivity {
         }
     };
 
+    /**
+     * get speed from MainActivity and displays it on this activity every 1000 milliseconds
+     */
     Runnable speedHandlerTask = new Runnable() {
         @Override
         public void run() {
@@ -105,7 +107,7 @@ public class VideoActivity extends AppCompatActivity {
     }
 
     /**
-     * goes back to previous activity.
+     * goes back to previous activity and closes this activity.
      *
      * @param view this view
      */
@@ -124,7 +126,7 @@ public class VideoActivity extends AppCompatActivity {
     }
 
     /**
-     * called on when changed to this activity, calls on startRepeatingTask.
+     * called on when entered this activity, calls on startRepeatingTask.
      */
     protected void onStart() {
         super.onStart();

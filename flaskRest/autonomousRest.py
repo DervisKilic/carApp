@@ -32,7 +32,6 @@ def activate_background_work():
     thread = threading.Thread(target=run_job)
     thread.start()
 
-# root
 @app.route("/")
 def index():
     return "This is Root!"
