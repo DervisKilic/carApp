@@ -27,15 +27,21 @@ public class MainActivity extends AppCompatActivity  {
     /**
      * the current odometer in meters
      */
-    public static int currentOdometer;
+    public static String currentOdometer;
+
+    /**
+     * the current speed in meters per second
+     */
+    public static String speed;
 
     int maxWidthBattery;
     int currentWidthBattery;
     TextView currentSpeed;
+    Boolean stopSpeedHandler;
     ImageView batteryStatus;
     ImageView lockImg;
     Boolean locked;
-    Boolean lightsOn;
+    Boolean lightsOn = false;
     ImageView stopImg;
     ImageView lightsImg;
     CarRest car = new CarRest();
@@ -77,7 +83,8 @@ public class MainActivity extends AppCompatActivity  {
         @Override
         public void run() {
             pool.execute(car.getServiceSpeed);
-            currentSpeed.setText(car.getSpeed());
+            speed = (car.getSpeed());
+            currentSpeed.setText(speed);
             speedHandler.postDelayed(speedHandlerTask, 1000);
         }
     };
@@ -109,15 +116,18 @@ public class MainActivity extends AppCompatActivity  {
     void startRepeatingTask() {
         speedHandlerTask.run();
         batteryHandlerTask.run();
+        odometerHandlerTask.run();
     }
 
     /**
      * stops speedHandlerTask and batteryHandlerTask
      */
     void stopRepeatingTask() {
-        speedHandler.removeCallbacks(speedHandlerTask);
+        if (stopSpeedHandler) {
+            speedHandler.removeCallbacks(speedHandlerTask);
+        }
         batteryHandler.removeCallbacks(batteryHandlerTask);
-
+        odometerHandler.removeCallbacks(odometerHandlerTask);
     }
 
     /**
@@ -128,6 +138,7 @@ public class MainActivity extends AppCompatActivity  {
     public void diagActivity(View view) {
         startActivity(new Intent(MainActivity.this, DiagnosticsActivity.class));
         overridePendingTransition(R.anim.enter_anim, R.anim.exit_anim);
+        stopSpeedHandler = true;
         stopRepeatingTask();
     }
 
@@ -139,6 +150,7 @@ public class MainActivity extends AppCompatActivity  {
     public void remoteControlClick(View view) {
         startActivity(new Intent(MainActivity.this, VideoActivity.class));
         overridePendingTransition(R.anim.enter_anim, R.anim.exit_anim);
+        stopSpeedHandler = false;
         stopRepeatingTask();
     }
 
@@ -147,6 +159,7 @@ public class MainActivity extends AppCompatActivity  {
      */
     protected void onDestroy() {
         super.onDestroy();
+        stopSpeedHandler = true;
         stopRepeatingTask();
     }
 
@@ -186,6 +199,7 @@ public class MainActivity extends AppCompatActivity  {
     public void locationClicked(View view) {
         startActivity(new Intent(MainActivity.this, LocationActivity.class));
         overridePendingTransition(R.anim.enter_anim, R.anim.exit_anim);
+        stopSpeedHandler = true;
         stopRepeatingTask();
     }
 
@@ -232,10 +246,12 @@ public class MainActivity extends AppCompatActivity  {
         lightsImg.startAnimation(animAlpha);
 
         if (lightsOn) {
+            lightsImg.setAlpha(0.1f);
             car.setDataLights(false);
             pool.execute(car.postServiceLights);
             lightsOn = false;
         } else {
+            lightsImg.setAlpha(1f);
             car.setDataLights(true);
             pool.execute(car.postServiceLights);
             lightsOn = true;

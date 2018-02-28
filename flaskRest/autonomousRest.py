@@ -24,7 +24,7 @@ def activate_background_work():
         while True:
             pic = car.get_picture(0)
             newImage = pic.resize((300, 200))
-            newImage.save(buff, "jpeg", quality=50, optimize=True)
+            newImage.save(buff, "jpeg", quality=40, optimize=True)
             with lock:
                 buff.seek(0)
             time.sleep(0.005)
@@ -105,13 +105,15 @@ def set_lock():
     return "ok"
 
 
-@app.route('/lock', methods=['POST'])
+@app.route('/lights', methods=['POST'])
 def set_lights():
     lightsOn = request.form['lights']
 
     if lightsOn == "true":
+        print(lightsOn)
         """car.arm_lights()"""
     else:
+        print(lightsOn)
         """car.disarm_lights()"""
     return "ok"
 

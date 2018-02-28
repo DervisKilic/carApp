@@ -20,7 +20,7 @@ public class CarDataActivity extends AppCompatActivity {
         setContentView(R.layout.activity_car_data);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        odometer = findViewById(R.id.odometerText);
+        odometer = findViewById(R.id.odometerValueText);
         batteryPercentText = (findViewById(R.id.batteryValueText));
     }
 

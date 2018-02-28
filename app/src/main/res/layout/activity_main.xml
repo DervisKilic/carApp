@@ -129,9 +129,9 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintStart_toStartOf="@+id/recLights"
         app:layout_constraintTop_toTopOf="@+id/recLights"
+        android:alpha="0.1"
         app:srcCompat="@drawable/lights"
-        android:contentDescription="@string/light_image"
-        tools:ignore="RtlHardcoded" />
+        android:contentDescription="@string/light_image" />
 
     <ImageView
         android:id="@+id/rectHorn"
@@ -162,6 +162,7 @@
         app:layout_constraintStart_toStartOf="@+id/rectHorn"
         app:layout_constraintTop_toTopOf="@+id/rectHorn"
         app:srcCompat="@drawable/horn"
+        android:alpha="0.1"
         android:contentDescription="@string/horn_image" />
 
     <ImageView

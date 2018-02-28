@@ -7,9 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import io.github.controlwear.virtual.joystick.android.JoystickView;
 
 /**
@@ -18,9 +18,11 @@ import io.github.controlwear.virtual.joystick.android.JoystickView;
 public class VideoActivity extends AppCompatActivity {
     CarRest car = new CarRest();
     ExecutorService pool = Executors.newCachedThreadPool();
-    Handler restLooper;
+    Handler imageHandler;
+    Handler speedHandler;
     ImageView carStream;
     Bitmap newImage;
+    TextView speedText;
 
     /**
      * turn rate
@@ -39,6 +41,8 @@ public class VideoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_video);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
+        speedText = findViewById(R.id.speedText);
+
         JoystickView joystick = findViewById(R.id.joyStick);
         joystick.setOnMoveListener(new JoystickView.OnMoveListener() {
             @Override
@@ -53,13 +57,14 @@ public class VideoActivity extends AppCompatActivity {
         });
 
         carStream = findViewById(R.id.carGoggle);
-        restLooper = new Handler();
+        imageHandler = new Handler();
+        speedHandler = new Handler();
     }
 
     /**
      * displays a new image every 20 millisecond
      */
-    Runnable handlerTask = new Runnable() {
+    Runnable imageHandlerTask = new Runnable() {
         @Override
         public void run() {
             pool.execute(car.getServiceImage);
@@ -71,7 +76,15 @@ public class VideoActivity extends AppCompatActivity {
                     carStream.setImageBitmap(newImage);
                 }
             });
-            restLooper.postDelayed(handlerTask, 10);
+            imageHandler.postDelayed(imageHandlerTask, 10);
+        }
+    };
+
+    Runnable speedHandlerTask = new Runnable() {
+        @Override
+        public void run() {
+            speedText.setText(MainActivity.speed);
+            speedHandler.postDelayed(speedHandlerTask, 1000);
         }
     };
 
@@ -79,14 +92,16 @@ public class VideoActivity extends AppCompatActivity {
      * starts speedHandlerTask
      */
     void startRepeatingTask() {
-        handlerTask.run();
+        imageHandlerTask.run();
+        speedHandlerTask.run();
     }
 
     /**
      * stops speedHandlerTask
      */
     void stopRepeatingTask() {
-        restLooper.removeCallbacks(handlerTask);
+        imageHandler.removeCallbacks(imageHandlerTask);
+        speedHandler.removeCallbacks(speedHandlerTask);
     }
 
     /**

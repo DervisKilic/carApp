@@ -19,8 +19,7 @@ public class DiagnosticsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_diagnostics);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        odometer = findViewById(R.id.odometerText);
-        odometer.setText(MainActivity.currentOdometer);
+        odometer = findViewById(R.id.odometerValueText);
     }
 
     /**

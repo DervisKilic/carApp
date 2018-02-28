@@ -67,8 +67,8 @@ public class CarRest {
      *
      * @return this odometer
      */
-    int getOdometer() {
-        return Integer.parseInt(currentOdometer);
+    String getOdometer() {
+        return currentOdometer;
     }
 
     /**
