@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity  {
     int maxWidthBattery;
     int currentWidthBattery;
     TextView currentSpeed;
-    Boolean stopSpeedHandler;
     ImageView batteryStatus;
     ImageView lockImg;
     Boolean locked;
@@ -62,7 +61,6 @@ public class MainActivity extends AppCompatActivity  {
         maxWidthBattery = batteryStatus.getLayoutParams().width;
         currentWidthBattery = maxWidthBattery;
         currentSpeed = findViewById(R.id.currentSpeedText);
-        batteryStatus = findViewById(R.id.batteryStatus);
         voltage = findViewById(R.id.voltageText);
         lockImg = findViewById(R.id.lockedImg);
         stopImg = findViewById(R.id.stopImg);
@@ -73,6 +71,7 @@ public class MainActivity extends AppCompatActivity  {
         speedHandler = new Handler();
         batteryHandler = new Handler();
         odometerHandler = new Handler();
+        getBatteryStatus();
     }
 
     /**
@@ -98,7 +97,7 @@ public class MainActivity extends AppCompatActivity  {
         @Override
         public void run() {
             getBatteryStatus();
-            batteryHandler.postDelayed(batteryHandlerTask, 4500);
+            batteryHandler.postDelayed(batteryHandlerTask, 15000);
         }
     };
 
@@ -112,7 +111,7 @@ public class MainActivity extends AppCompatActivity  {
         public void run() {
             pool.execute(car.getServiceOdometer);
             currentOdometer = car.getOdometer();
-            odometerHandler.postDelayed(odometerHandlerTask, 5500);
+            odometerHandler.postDelayed(odometerHandlerTask, 15400);
         }
     };
 
@@ -129,9 +128,7 @@ public class MainActivity extends AppCompatActivity  {
      * stops batteryHandlerTask, odometerHandlerTask and - speedHandlerTask if Boolean is true
      */
     void stopRepeatingTask() {
-        if (stopSpeedHandler) {
-            speedHandler.removeCallbacks(speedHandlerTask);
-        }
+        speedHandler.removeCallbacks(speedHandlerTask);
         batteryHandler.removeCallbacks(batteryHandlerTask);
         odometerHandler.removeCallbacks(odometerHandlerTask);
     }
@@ -144,7 +141,6 @@ public class MainActivity extends AppCompatActivity  {
     public void diagActivity(View view) {
         startActivity(new Intent(MainActivity.this, DiagnosticsActivity.class));
         overridePendingTransition(R.anim.enter_anim, R.anim.exit_anim);
-        stopSpeedHandler = true;
         stopRepeatingTask();
     }
 
@@ -156,7 +152,6 @@ public class MainActivity extends AppCompatActivity  {
     public void remoteControlClick(View view) {
         startActivity(new Intent(MainActivity.this, VideoActivity.class));
         overridePendingTransition(R.anim.enter_anim, R.anim.exit_anim);
-        stopSpeedHandler = false;
         stopRepeatingTask();
     }
 
@@ -165,7 +160,6 @@ public class MainActivity extends AppCompatActivity  {
      */
     protected void onDestroy() {
         super.onDestroy();
-        stopSpeedHandler = true;
         stopRepeatingTask();
     }
 
@@ -205,7 +199,6 @@ public class MainActivity extends AppCompatActivity  {
     public void locationClicked(View view) {
         startActivity(new Intent(MainActivity.this, LocationActivity.class));
         overridePendingTransition(R.anim.enter_anim, R.anim.exit_anim);
-        stopSpeedHandler = true;
         stopRepeatingTask();
     }
 

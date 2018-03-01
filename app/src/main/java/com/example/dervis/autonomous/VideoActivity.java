@@ -19,10 +19,8 @@ public class VideoActivity extends AppCompatActivity {
     CarRest car = new CarRest();
     ExecutorService pool = Executors.newCachedThreadPool();
     Handler imageHandler;
-    Handler speedHandler;
     ImageView carStream;
     Bitmap newImage;
-    TextView speedText;
 
     /**
      * turn rate
@@ -54,10 +52,8 @@ public class VideoActivity extends AppCompatActivity {
             }
         });
 
-        speedText = findViewById(R.id.speedText);
         carStream = findViewById(R.id.carGoggle);
         imageHandler = new Handler();
-        speedHandler = new Handler();
     }
 
     /**
@@ -75,18 +71,7 @@ public class VideoActivity extends AppCompatActivity {
                     carStream.setImageBitmap(newImage);
                 }
             });
-            imageHandler.postDelayed(imageHandlerTask, 10);
-        }
-    };
-
-    /**
-     * get speed from MainActivity and displays it on this activity every 1000 milliseconds
-     */
-    Runnable speedHandlerTask = new Runnable() {
-        @Override
-        public void run() {
-            speedText.setText(MainActivity.speed);
-            speedHandler.postDelayed(speedHandlerTask, 1000);
+            imageHandler.postDelayed(imageHandlerTask, 15);
         }
     };
 
@@ -95,7 +80,6 @@ public class VideoActivity extends AppCompatActivity {
      */
     void startRepeatingTask() {
         imageHandlerTask.run();
-        speedHandlerTask.run();
     }
 
     /**
@@ -103,7 +87,6 @@ public class VideoActivity extends AppCompatActivity {
      */
     void stopRepeatingTask() {
         imageHandler.removeCallbacks(imageHandlerTask);
-        speedHandler.removeCallbacks(speedHandlerTask);
     }
 
     /**
