@@ -31,6 +31,7 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
     Marker carLocationMarker;
     LatLng carLocation;
     MarkerOptions carOptions;
+    Boolean zoomView = true;
     Boolean addMark = true;
 
     @Override
@@ -72,12 +73,14 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
                     addMark = false;
                 }
                 carLocationMarker.setPosition(carLocation);
-
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(carLocation));
-                CameraUpdate center = CameraUpdateFactory.newLatLng(carLocation);
-                CameraUpdate zoom = CameraUpdateFactory.zoomTo(18);
-                mMap.moveCamera(center);
-                mMap.animateCamera(zoom);
+                if(zoomView) {
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(carLocation));
+                    CameraUpdate center = CameraUpdateFactory.newLatLng(carLocation);
+                    CameraUpdate zoom = CameraUpdateFactory.zoomTo(18);
+                    mMap.moveCamera(center);
+                    mMap.animateCamera(zoom);
+                    zoomView = false;
+                }
             }
         }
     }
@@ -126,7 +129,13 @@ public class LocationActivity extends FragmentActivity implements OnMapReadyCall
      */
     protected void onStart() {
         super.onStart();
-        startRepeatingTask();
+        if(MainActivity.openConnection) {
+            startRepeatingTask();
+        }
+    }
+    protected void onPause(){
+        stopRepeatingTask();
+        super.onPause();
     }
 
     /**

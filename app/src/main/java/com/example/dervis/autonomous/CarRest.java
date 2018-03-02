@@ -2,6 +2,8 @@ package com.example.dervis.autonomous;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.BufferedReader;
@@ -10,6 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
@@ -19,12 +22,14 @@ import java.util.Iterator;
  */
 public class CarRest {
     private Bitmap image;
+    public static String ip;
     private String currentSpeed;
     private double speed;
     private String currentOdometer;
     private double turn;
     private boolean lock;
     private boolean lights;
+    public static int respCode;
     private Double battery = 0.0;
     private Double lat;
     private Double lng;
@@ -86,6 +91,12 @@ public class CarRest {
     void setDataLock(Boolean lock) {
         this.lock = lock;
     }
+    void setIp(String ip) {
+        this.ip = ip;
+    }
+    String getIp() {
+        return ip;
+    }
 
     /**
      * sets the lock to false or true
@@ -103,7 +114,7 @@ public class CarRest {
 
         @Override
         public void run() {
-            String url = "http://192.168.150.155:5000/steer";
+            String url = "http://"+ip+":5000/steer";
             String urlParameters = "speed=" + speed + "&turn=" + turn;
             byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
@@ -141,7 +152,7 @@ public class CarRest {
 
         @Override
         public void run() {
-            String url = "http://192.168.150.155:5000/lock";
+            String url = "http://"+ip+":5000/lock";
             String urlParameters = "&lock=" + lock;
             byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
@@ -179,7 +190,7 @@ public class CarRest {
 
         @Override
         public void run() {
-            String url = "http://192.168.150.155:5000/lights";
+            String url = "http://"+ip+":5000/lights";
             String urlParameters = "&lights=" + lights;
             byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
 
@@ -218,7 +229,7 @@ public class CarRest {
         @Override
         public void run() {
             try {
-                URL localUrl = new URL("http://192.168.150.155:5000/image");
+                URL localUrl = new URL("http://"+ip+":5000/image");
                 connection = (HttpURLConnection) localUrl.openConnection();
                 connection.setRequestMethod("GET");
 
@@ -240,11 +251,13 @@ public class CarRest {
         @Override
         public void run() {
             try {
-                URL localUrl = new URL("http://192.168.150.155:5000/speed");
+                URL localUrl = new URL("http://"+ip+":5000/speed");
+                Log.i("ip", "" + ip);
                 connection = (HttpURLConnection) localUrl.openConnection();
                 connection.setAllowUserInteraction(false);
                 connection.setInstanceFollowRedirects(true);
                 connection.setRequestMethod("GET");
+                respCode = ((connection).getResponseCode());
 
                 InputStream input = connection.getInputStream();
                 StringBuilder totalLines = new StringBuilder(input.available());
@@ -255,7 +268,8 @@ public class CarRest {
                 }
                 currentSpeed = totalLines.toString();
 
-            } catch (Exception e) {
+
+            }  catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -270,7 +284,7 @@ public class CarRest {
         @Override
         public void run() {
             try {
-                URL localUrl = new URL("http://192.168.150.155:5000/location");
+                URL localUrl = new URL("http://"+ip+":5000/location");
                 connection = (HttpURLConnection) localUrl.openConnection();
                 connection.setAllowUserInteraction(false);
                 connection.setInstanceFollowRedirects(true);
@@ -309,7 +323,7 @@ public class CarRest {
         @Override
         public void run() {
             try {
-                URL localUrl = new URL("http://192.168.150.155:5000/battery");
+                URL localUrl = new URL("http://"+ip+":5000/battery");
                 connection = (HttpURLConnection) localUrl.openConnection();
                 connection.setAllowUserInteraction(false);
                 connection.setInstanceFollowRedirects(true);
@@ -339,7 +353,7 @@ public class CarRest {
         @Override
         public void run() {
             try {
-                URL localUrl = new URL("http://192.168.150.155:5000/odometer");
+                URL localUrl = new URL("http://"+ip+":5000/odometer");
                 connection = (HttpURLConnection) localUrl.openConnection();
                 connection.setAllowUserInteraction(false);
                 connection.setInstanceFollowRedirects(true);

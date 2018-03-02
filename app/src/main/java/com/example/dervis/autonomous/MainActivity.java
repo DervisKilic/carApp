@@ -4,13 +4,19 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -34,6 +40,9 @@ public class MainActivity extends AppCompatActivity  {
      */
     public static String speed;
 
+    public static Boolean openConnection = false;
+
+
     int maxWidthBattery;
     int currentWidthBattery;
     TextView currentSpeed;
@@ -41,8 +50,10 @@ public class MainActivity extends AppCompatActivity  {
     ImageView lockImg;
     Boolean locked;
     Boolean lightsOn = false;
+    Boolean connected = false;
     ImageView stopImg;
     ImageView lightsImg;
+    Button connectButton;
     CarRest car;
     ExecutorService pool;
     Handler speedHandler;
@@ -50,6 +61,8 @@ public class MainActivity extends AppCompatActivity  {
     Handler odometerHandler;
     Animation animAlpha;
     TextView voltage;
+    String ip;
+    EditText ipNr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,13 +78,13 @@ public class MainActivity extends AppCompatActivity  {
         lockImg = findViewById(R.id.lockedImg);
         stopImg = findViewById(R.id.stopImg);
         lightsImg = findViewById(R.id.lightsImg);
+        connectButton = findViewById(R.id.connectButton);
         locked = true;
         car = new CarRest();
-        pool = Executors.newCachedThreadPool();
+        pool = Executors.newSingleThreadExecutor();
         speedHandler = new Handler();
         batteryHandler = new Handler();
         odometerHandler = new Handler();
-        getBatteryStatus();
     }
 
     /**
@@ -168,7 +181,14 @@ public class MainActivity extends AppCompatActivity  {
      */
     protected void onStart() {
         super.onStart();
-        startRepeatingTask();
+        if(connected) {
+            startRepeatingTask();
+        }
+    }
+
+    protected void onPause(){
+        stopRepeatingTask();
+        super.onPause();
     }
 
     /**
@@ -253,6 +273,45 @@ public class MainActivity extends AppCompatActivity  {
             car.setDataLights(true);
             pool.execute(car.postServiceLights);
             lightsOn = true;
+        }
+    }
+
+    public void connectOnClicked(View view) {
+        AlertDialog.Builder connection = new AlertDialog.Builder(this);
+        View connectionView = getLayoutInflater().inflate(R.layout.server_connect, null);
+        ipNr = connectionView.findViewById(R.id.ipAddressEditText);
+        Button connectNowButton = connectionView.findViewById(R.id.connectNowButton);
+        connection.setView(connectionView);
+        final AlertDialog dialog = connection.create();
+
+        if(!connected) {
+            connectNowButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ip = ipNr.getText().toString();
+                    car.setIp(ip);
+                    pool.execute(car.getServiceSpeed);
+                    Log.i("Responde Code:", "" + CarRest.respCode);
+                    if(CarRest.respCode >= 200) {
+                        connected = true;
+                        openConnection = true;
+                        dialog.cancel();
+                        connectButton.setText("Disconnect");
+                        Toast.makeText(MainActivity.this,"Connection Success!", Toast.LENGTH_SHORT).show();
+                    }else{
+                        stopRepeatingTask();
+                        Toast.makeText(MainActivity.this,"Connection failed", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            });
+            dialog.show();
+        }else {
+            Log.i("Responde Code2", "" + CarRest.respCode);
+            connected = false;
+            openConnection = false;
+            stopRepeatingTask();
+            connectButton.setText("Connect");
         }
     }
 }

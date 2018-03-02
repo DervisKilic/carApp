@@ -24,17 +24,16 @@
 
     <ImageView
         android:id="@+id/speedImg"
-        android:layout_width="0dp"
+        android:layout_width="279dp"
         android:layout_height="99dp"
+        android:layout_marginStart="8dp"
+        android:contentDescription="@string/speed_image"
         app:layout_constraintBottom_toTopOf="@+id/rectLock"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/batteryStatusImg"
-        app:srcCompat="@drawable/speed"
-        android:contentDescription="@string/speed_image" />
+        app:srcCompat="@drawable/speed" />
 
     <TextView
         android:id="@+id/currentSpeedText"
@@ -350,5 +349,20 @@
         app:layout_constraintEnd_toEndOf="@+id/batteryStatus"
         app:layout_constraintStart_toStartOf="@+id/batteryStatus"
         app:layout_constraintTop_toTopOf="@+id/batteryStatus" />
+
+    <Button
+        android:id="@+id/connectButton"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="#c4c4c4"
+        android:onClick="connectOnClicked"
+        android:text="@string/connect"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

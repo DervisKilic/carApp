@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import io.github.controlwear.virtual.joystick.android.JoystickView;
@@ -71,7 +71,7 @@ public class VideoActivity extends AppCompatActivity {
                     carStream.setImageBitmap(newImage);
                 }
             });
-            imageHandler.postDelayed(imageHandlerTask, 15);
+            imageHandler.postDelayed(imageHandlerTask, 10);
         }
     };
 
@@ -113,6 +113,12 @@ public class VideoActivity extends AppCompatActivity {
      */
     protected void onStart() {
         super.onStart();
-        startRepeatingTask();
+        if(MainActivity.openConnection) {
+            startRepeatingTask();
+        }
+    }
+    protected void onPause(){
+        stopRepeatingTask();
+        super.onPause();
     }
 }
