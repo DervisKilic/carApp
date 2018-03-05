@@ -17,6 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Objects;
+import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -50,7 +52,6 @@ public class MainActivity extends AppCompatActivity  {
     ImageView lockImg;
     Boolean locked;
     Boolean lightsOn = false;
-    Boolean connected = false;
     ImageView stopImg;
     ImageView lightsImg;
     Button connectButton;
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity  {
     TextView voltage;
     String ip;
     EditText ipNr;
+    View connectionView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,7 +183,7 @@ public class MainActivity extends AppCompatActivity  {
      */
     protected void onStart() {
         super.onStart();
-        if(connected) {
+        if(openConnection) {
             startRepeatingTask();
         }
     }
@@ -277,41 +279,43 @@ public class MainActivity extends AppCompatActivity  {
     }
 
     public void connectOnClicked(View view) {
+        connectionView = getLayoutInflater().inflate(R.layout.server_connect, null);
         AlertDialog.Builder connection = new AlertDialog.Builder(this);
-        View connectionView = getLayoutInflater().inflate(R.layout.server_connect, null);
-        ipNr = connectionView.findViewById(R.id.ipAddressEditText);
         Button connectNowButton = connectionView.findViewById(R.id.connectNowButton);
         connection.setView(connectionView);
         final AlertDialog dialog = connection.create();
+        ipNr = connectionView.findViewById(R.id.ipAddressEditText);
 
-        if(!connected) {
+        if(!openConnection) {
             connectNowButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ip = ipNr.getText().toString();
                     car.setIp(ip);
                     pool.execute(car.getServiceSpeed);
-                    Log.i("Responde Code:", "" + CarRest.respCode);
-                    if(CarRest.respCode >= 200) {
-                        connected = true;
-                        openConnection = true;
-                        dialog.cancel();
-                        connectButton.setText("Disconnect");
-                        Toast.makeText(MainActivity.this,"Connection Success!", Toast.LENGTH_SHORT).show();
-                    }else{
-                        stopRepeatingTask();
-                        Toast.makeText(MainActivity.this,"Connection failed", Toast.LENGTH_SHORT).show();
-                    }
 
+                    Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        public void run() {
+                            if(CarRest.responseCode == 200) {
+                                startRepeatingTask();
+                                openConnection = true;
+                                dialog.cancel();
+                                connectButton.setText("Disconnect");
+                                Toast.makeText(MainActivity.this,"Connection Success!", Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(MainActivity.this,"Connection failed", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }, 1100);
                 }
             });
             dialog.show();
         }else {
-            Log.i("Responde Code2", "" + CarRest.respCode);
-            connected = false;
-            openConnection = false;
             stopRepeatingTask();
+            openConnection = false;
             connectButton.setText("Connect");
+            currentSpeed.setText("1");
         }
     }
 }

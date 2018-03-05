@@ -29,10 +29,10 @@ public class CarRest {
     private double turn;
     private boolean lock;
     private boolean lights;
-    public static int respCode;
     private Double battery = 0.0;
     private Double lat;
     private Double lng;
+    public static int responseCode;
 
     /**
      * gets the current speed of the car
@@ -247,17 +247,17 @@ public class CarRest {
      */
     Runnable getServiceSpeed = new Runnable() {
         private HttpURLConnection connection;
-
         @Override
         public void run() {
             try {
+                responseCode = 0;
                 URL localUrl = new URL("http://"+ip+":5000/speed");
-                Log.i("ip", "" + ip);
                 connection = (HttpURLConnection) localUrl.openConnection();
                 connection.setAllowUserInteraction(false);
                 connection.setInstanceFollowRedirects(true);
                 connection.setRequestMethod("GET");
-                respCode = ((connection).getResponseCode());
+                connection.setConnectTimeout(1000);
+                responseCode = connection.getResponseCode();
 
                 InputStream input = connection.getInputStream();
                 StringBuilder totalLines = new StringBuilder(input.available());
