@@ -152,10 +152,11 @@
         android:layout_height="56dp"
         android:layout_marginBottom="20dp"
         android:layout_marginStart="16dp"
+        android:alpha="0.3"
+        android:contentDescription="@string/settings_image"
         app:layout_constraintBottom_toBottomOf="@+id/settingsRectImg"
         app:layout_constraintStart_toStartOf="@+id/settingsRectImg"
-        app:srcCompat="@drawable/settings"
-        android:contentDescription="@string/settings_image" />
+        app:srcCompat="@drawable/settings" />
 
     <TextView
         android:id="@+id/SettingsText"
@@ -163,6 +164,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:layout_marginStart="16dp"
+        android:alpha="0.3"
         android:text="@string/maintanence"
         android:textColor="@android:color/white"
         android:textSize="20sp"
@@ -178,14 +180,15 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:alpha="0.3"
         android:background="@android:color/transparent"
+        android:contentDescription="@string/settings_arrow"
         app:layout_constraintBottom_toBottomOf="@+id/settingsRectImg"
         app:layout_constraintEnd_toEndOf="@+id/settingsRectImg"
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toEndOf="@+id/SettingsText"
         app:layout_constraintTop_toTopOf="@+id/settingsRectImg"
-        app:srcCompat="@drawable/arrow"
-        android:contentDescription="@string/settings_arrow" />
+        app:srcCompat="@drawable/arrow" />
 
     <ImageView
         android:id="@+id/diagRectImg"
@@ -204,10 +207,11 @@
         android:layout_height="56dp"
         android:layout_marginBottom="24dp"
         android:layout_marginStart="16dp"
+        android:alpha="0.3"
+        android:contentDescription="@string/diagnostics_image"
         app:layout_constraintBottom_toBottomOf="@+id/diagRectImg"
         app:layout_constraintStart_toStartOf="@+id/diagRectImg"
-        app:srcCompat="@drawable/diag"
-        android:contentDescription="@string/diagnostics_image" />
+        app:srcCompat="@drawable/diag" />
 
     <TextView
         android:id="@+id/diagText"
@@ -215,6 +219,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
         android:layout_marginStart="16dp"
+        android:alpha="0.3"
         android:text="@string/diagnostics"
         android:textColor="@android:color/white"
         android:textSize="20sp"
@@ -230,15 +235,16 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:alpha="0.3"
         android:background="@android:color/transparent"
+        android:contentDescription="@string/diagnostics_arrow"
         app:layout_constraintBottom_toBottomOf="@+id/diagRectImg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toEndOf="@+id/diagText"
         app:layout_constraintTop_toBottomOf="@+id/settingsRectImg"
         app:layout_constraintVertical_bias="0.29000002"
-        app:srcCompat="@drawable/arrow"
-        android:contentDescription="@string/diagnostics_arrow" />
+        app:srcCompat="@drawable/arrow" />
 
     <ImageView
         android:id="@+id/APcarImg"

@@ -55,6 +55,6 @@
     <string name="adas_software_version">ADAS Software version</string>
     <string name="voltage">Voltage</string>
     <string name="connect">connect</string>
-    <string name="_192_168_150_xxx">192.168.150.XXX</string>
+    <string name="_192_168_xxx_xxx">192.168.XXX.XXX</string>
     <string name="enter_ip_address">Enter ip address:</string>
 </resources>

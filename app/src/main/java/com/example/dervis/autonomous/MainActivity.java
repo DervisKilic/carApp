@@ -290,6 +290,7 @@ public class MainActivity extends AppCompatActivity  {
             connectNowButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    stopRepeatingTask();
                     ip = ipNr.getText().toString();
                     car.setIp(ip);
                     pool.execute(car.getServiceSpeed);
@@ -307,7 +308,7 @@ public class MainActivity extends AppCompatActivity  {
                                 Toast.makeText(MainActivity.this,"Connection failed", Toast.LENGTH_SHORT).show();
                             }
                         }
-                    }, 1100);
+                    }, 1000);
                 }
             });
             dialog.show();
@@ -315,7 +316,7 @@ public class MainActivity extends AppCompatActivity  {
             stopRepeatingTask();
             openConnection = false;
             connectButton.setText("Connect");
-            currentSpeed.setText("1");
+            currentSpeed.setText("0");
         }
     }
 }
