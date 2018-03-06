@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity  {
         @Override
         public void run() {
             getBatteryStatus();
-            batteryHandler.postDelayed(batteryHandlerTask, 15000);
+            batteryHandler.postDelayed(batteryHandlerTask, 1000);
         }
     };
 
@@ -233,21 +233,24 @@ public class MainActivity extends AppCompatActivity  {
         lockImg.setImageResource(R.drawable.locked);
         locked = true;
     }
-
     /**
      * calls the server and changes battery icon based on how much voltage is left
      */
     public void getBatteryStatus() {
-        Double maxBattery = 16800.0;
+        Double minBattery = 12000.0;
+        Double maxDifference = 4800.0;
+
         Double currentVoltage = car.getBattery() / 1000;
         pool.execute(car.getServiceBattery);
         currentBattery = car.getBattery();
-        currentBattery = currentBattery / maxBattery;
+        currentBattery -= minBattery;
+        currentBattery = currentBattery / maxDifference;
         currentWidthBattery = (int) (maxWidthBattery * currentBattery);
+
         batteryStatus.getLayoutParams().width = currentWidthBattery;
         voltage.setText(currentVoltage + "V");
 
-        if (currentBattery < 0.3 && currentBattery > 0.2) {
+        if (currentBattery < 0.5 && currentBattery > 0.2) {
             batteryStatus.setBackgroundColor((Color.parseColor("#fffb1e")));
         } else if (currentBattery < 0.2) {
             batteryStatus.setBackgroundColor((Color.parseColor("#ed3636")));
