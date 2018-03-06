@@ -2,8 +2,6 @@ package com.example.dervis.autonomous;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.BufferedReader;
@@ -12,17 +10,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
-
 
 /**
  * this class handles http calls to server
  */
-public class CarRest {
+class CarRest {
     private Bitmap image;
-    public static String ip;
     private String currentSpeed;
     private double speed;
     private String currentOdometer;
@@ -32,7 +27,16 @@ public class CarRest {
     private Double battery = 0.0;
     private Double lat;
     private Double lng;
-    public static int responseCode;
+
+    /**
+     * ip number
+     */
+    static String ip;
+
+    /**
+     * response code from connection
+     */
+    static int responseCode;
 
     /**
      * gets the current speed of the car
@@ -90,12 +94,6 @@ public class CarRest {
      */
     void setDataLock(Boolean lock) {
         this.lock = lock;
-    }
-    void setIp(String ip) {
-        this.ip = ip;
-    }
-    String getIp() {
-        return ip;
     }
 
     /**

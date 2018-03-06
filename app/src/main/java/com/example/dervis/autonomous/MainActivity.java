@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -16,9 +15,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.Objects;
-import java.util.Timer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -42,6 +38,9 @@ public class MainActivity extends AppCompatActivity  {
      */
     public static String speed;
 
+    /**
+     * connection open or not checker
+     */
     public static Boolean openConnection = false;
 
 
@@ -278,6 +277,11 @@ public class MainActivity extends AppCompatActivity  {
         }
     }
 
+    /**
+     * Opens a dialog view and ask to enter ip address if you get a response code 200 connection is
+     * established else it fails.
+     * @param view connect
+     */
     public void connectOnClicked(View view) {
         connectionView = getLayoutInflater().inflate(R.layout.server_connect, null);
         AlertDialog.Builder connection = new AlertDialog.Builder(this);
@@ -292,7 +296,7 @@ public class MainActivity extends AppCompatActivity  {
                 public void onClick(View v) {
                     stopRepeatingTask();
                     ip = ipNr.getText().toString();
-                    car.setIp(ip);
+                    CarRest.ip = ip;
                     pool.execute(car.getServiceSpeed);
 
                     Handler handler = new Handler();
